@@ -6,4 +6,9 @@ html,body{
     margin:0;
     padding:0;
     box-sizing:border-box;
+    background-color:#e3ddd7;
+}
+
+h1,h2,h3,h4,h5,h6{
+    color:#5A321A;
 }
