@@ -1,5 +1,5 @@
 export default function SignUp(){
     return(
-        <button>Sign Up/Log In</button>
+        <button className="text-[#e3ddd7] bg-[#8b5b30] px-3 py-2 rounded-lg text-base">Sign Up/Log In</button>
     )
 }
