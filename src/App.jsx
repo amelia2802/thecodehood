@@ -1,29 +1,124 @@
-import {useRef} from 'react'
-import Header from './components/Header'
-import Hero from './components/Hero'
-import Catalogue from './components/Catalogue'
-import Footer from './components/Footer'
+import { useState, useRef } from 'react';
+import Header from './components/Header';
+import Hero from './components/Hero';
+import Catalogue from './components/Catalogue';
+import Footer from './components/Footer';
 
-import './App.css'
+import './App.css';
 
 function App() {
-  const targetRef = useRef(null)
+  const targetRef = useRef(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedTech, setSelectedTech] = useState('All');
+  const [geoStatus, setGeoStatus] = useState(null);
+  const [isGeoLoading, setIsGeoLoading] = useState(false);
 
   const scrollToCommunities = () => {
     targetRef.current?.scrollIntoView({
       behavior: 'smooth',
       block: 'start'
-    })
-  }
+    });
+  };
+
+  const handleSearchSubmit = (val) => {
+    if (typeof val === 'string') {
+      setSearchQuery(val);
+    }
+    scrollToCommunities();
+  };
+
+  const handleClearSearch = () => {
+    setSearchQuery('');
+  };
+
+  const handleGeolocation = () => {
+    if (!navigator.geolocation) {
+      setGeoStatus({
+        message: 'Browser geolocation is not supported on this device. You can search manually by city or postal code.',
+        type: 'info'
+      });
+      return;
+    }
+
+    setIsGeoLoading(true);
+    setGeoStatus(null);
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setIsGeoLoading(false);
+        const { latitude, longitude } = pos.coords;
+        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`)
+          .then((res) => res.json())
+          .then((geoData) => {
+            const locName =
+              geoData.address?.city ||
+              geoData.address?.town ||
+              geoData.address?.village ||
+              geoData.address?.state ||
+              '';
+            if (locName) {
+              setSearchQuery(locName);
+              setGeoStatus({
+                message: `Located: ${locName}`,
+                type: 'success'
+              });
+              scrollToCommunities();
+            } else {
+              setGeoStatus({
+                message: 'Location detected. You can type your city or postal code to search.',
+                type: 'info'
+              });
+            }
+          })
+          .catch(() => {
+            setGeoStatus({
+              message: 'Location detected. You can type your city or postal code to search.',
+              type: 'info'
+            });
+          });
+      },
+      (err) => {
+        setIsGeoLoading(false);
+        let msg = 'Location access was denied or unavailable. The directory remains fully usable by searching manually.';
+        if (err.code === 1) { // PERMISSION_DENIED
+          msg = 'Location permission was denied. You can search by city, state, or postal code.';
+        }
+        setGeoStatus({
+          message: msg,
+          type: 'info'
+        });
+      },
+      { timeout: 8000 }
+    );
+  };
+
   return (
-    <div className='flex flex-col gap-10 '>
-      <Header  onExploreClick={scrollToCommunities}/>
+    <div className="flex flex-col min-h-screen bg-[#faf6f0] text-[#402e32] gap-10 font-sans">
+      <Header
+        onExploreClick={scrollToCommunities}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        onSearchSubmit={handleSearchSubmit}
+        onClearSearch={handleClearSearch}
+        onLocationClick={handleGeolocation}
+        isGeoLoading={isGeoLoading}
+      />
       <Hero onExploreClick={scrollToCommunities} />
-      <Catalogue refProp={targetRef}/>
+      <Catalogue
+        refProp={targetRef}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        selectedTech={selectedTech}
+        setSelectedTech={setSelectedTech}
+        onClearSearch={handleClearSearch}
+        onLocationClick={handleGeolocation}
+        isGeoLoading={isGeoLoading}
+        geoStatus={geoStatus}
+        setGeoStatus={setGeoStatus}
+      />
       <Footer />
     </div>
-  )
+  );
 }
 
-export default App
-
+export default App;
