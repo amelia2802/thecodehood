@@ -1,0 +1,32 @@
+Complete all the tasks from lab 4 and check by passing the test cases
+## Lab 4: Location Search & Technology Filters
+
+**Objective:** Allow users to find relevant communities by searching for a location or filtering by technology and interest.
+
+**User Stories:**
+
+* You should connect the search input in the header to the community directory.
+* You should allow users to search by city, state, country, or postal code.
+* You should update the visible results when the search query changes.
+* You should make location matching case-insensitive.
+* You should trim unnecessary whitespace from search queries.
+* You should provide technology filters such as JavaScript, React, Java, Python, AI/ML, open source, and career development.
+* You should allow users to select a technology filter and see only matching communities.
+* You should provide an `All` option that removes the technology filter.
+* You should allow location search and technology filters to work together.
+* You should provide a clear-search action that restores the unfiltered location results.
+* You should ensure the search form works with both the Enter key and its search button.
+* You should treat location search as text matching in the initial version rather than promising exact-distance or map-based results.
+* You may add browser geolocation as an optional enhancement, but the directory must work if users deny location permission.
+
+**Tests:**
+
+* Waiting: 1. Searching for a city should return communities whose location fields match that city.
+* Waiting: 2. Searching for a state or postal code should return matching communities.
+* Waiting: 3. Search should work regardless of capitalization or leading and trailing spaces.
+* Waiting: 4. Selecting `React` should display communities tagged with React.
+* Waiting: 5. Selecting a technology filter while searching for a city should apply both conditions.
+* Waiting: 6. Selecting `All` should remove the technology filter.
+* Waiting: 7. Clearing the search should restore results matching the remaining active filters.
+* Waiting: 8. An unmatched query should display a helpful empty state rather than an application error.
+* Waiting: 9. The directory should remain usable when browser geolocation is unavailable or denied.
