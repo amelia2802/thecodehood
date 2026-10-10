@@ -1,5 +1,6 @@
 import { GiTechnoHeart } from "react-icons/gi";
 import Explore from "../utilities/Explore";
+import SubmitForm from "../utilities/SubmitForm.jsx";
 
 export default function Hero({ onExploreClick }) {
     return (
@@ -11,13 +12,14 @@ export default function Hero({ onExploreClick }) {
                     <h1>theCodehood.</h1>
                 </div>
                 <p className="italic text-[#402e32]">Finding your little corner of the tech community locally</p>
-                <div className="relative w-84 isolate mt-10 flex gap-6 text-[#e3ddd7] m-auto overflow-hidden rounded-md bg-linear-to-l from-[#f5d4b2] to-[#ab5709] px-4 py-2 shadow-md">
+                <div className="relative isolate mt-10 flex gap-6 text-[#e3ddd7] m-auto overflow-hidden rounded-md bg-linear-to-l from-[#f5d4b2] to-[#ab5709] px-4 py-2 shadow-md">
                     <div
                         aria-hidden="true"
                         className="absolute inset-0 -z-10 bg-[url(/images/doodle.png)] bg-cover bg-center opacity-40"
                     />
                     <p>Find your neighborhood tech community</p>
                     <Explore onClick={onExploreClick} />
+                    <SubmitForm />
                 </div>
             </div>
         </main>
