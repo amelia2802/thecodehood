@@ -1,0 +1,51 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4KW5BP4HEASQ6M0SCQSQ25J",
+  "session_id": "c64ec7f8-cf09-4081-b7dc-09302556bfff",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-10T21:40:34.5180374Z",
+  "branch": "backend",
+  "checkpoints_count": 2,
+  "save_step_count": 3,
+  "files_touched": [
+    "package.json",
+    "src/App.jsx",
+    "src/test_lab7.js",
+    "src/utilities/DisplayCard.jsx",
+    "src/utilities/communityService.js"
+  ],
+  "agent": "Antigravity",
+  "model": "",
+  "turn_id": "2914ca232109",
+  "session_metrics": {
+    "turn_count": 7
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-10T21:40:34.4329078Z",
+    "agent_lines": 306,
+    "agent_removed": 17,
+    "human_added": 0,
+    "human_modified": 42,
+    "human_removed": 0,
+    "total_committed": 348,
+    "total_lines_changed": 365,
+    "agent_percentage": 88.4931506849315,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 490,
+      "agent_lines_removed": 320
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 843,
+      "agent_lines_removed": 362
+    }
+  ]
+}
