@@ -1,15 +1,8 @@
+import { FaReact } from "react-icons/fa";
 export default function Footer(){
     return(
-        <footer id="footer">
-			<ul className="icons">
-				<li><a href="#" className="icon brands fa-twitter"><span className="label">Twitter</span></a></li>
-				<li><a href="#" className="icon brands fa-instagram"><span className="label">Instagram</span></a></li>
-				<li><a href="#" className="icon brands fa-github"><span className="label">GitHub</span></a></li>
-				<li><a href="#" className="icon fa-envelope"><span className="label">Email</span></a></li>
-			</ul>
-			<ul className="copyright">
-				<li>&copy; Untitled.</li><li>Credits: <a href="http://html5up.net">HTML5 UP</a></li>
-			</ul>
+        <footer className="px-6 py-3 text-base">
+				<p className="text-center italic">&copy; All Rights Reserved. Built with <FaReact className="inline"/> by Amelia Dutta.</p>
 		</footer>
     )
 }
