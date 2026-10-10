@@ -32,9 +32,26 @@ export default function DisplayCard({ data, onSelectTech }) {
 
     const isOnline = (data.format || data.type || "").toLowerCase() === "online" || !data.city;
 
+    // Safe URL sanitizer preventing javascript:, data:, or malformed scheme execution
+    const getSafeUrl = (urlStr) => {
+        if (!urlStr || typeof urlStr !== 'string') return null;
+        const trimmed = urlStr.trim();
+        try {
+            const parsed = new URL(trimmed);
+            if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+                return parsed.href;
+            }
+        } catch {
+            return null;
+        }
+        return null;
+    };
+
+    const safeWebsiteUrl = getSafeUrl(data.website_url || data.url);
+
     return (
         <Card
-            className="flex flex-col justify-between w-full max-w-sm rounded-xl overflow-hidden border border-[#8b5b30]/20 shadow-md hover:shadow-lg transition-shadow duration-300 bg-[#fffdfa]"
+            className="flex flex-col justify-between w-full max-w-sm rounded-xl overflow-hidden border border-[#8b5b30]/20 shadow-md hover:shadow-lg transition-shadow duration-300 bg-[#fffdfa] break-words"
             sx={{
                 bgcolor: '#fffdfa',
                 borderRadius: '16px',
@@ -49,7 +66,7 @@ export default function DisplayCard({ data, onSelectTech }) {
                     <CardMedia
                         sx={{ height: 160 }}
                         image={data.img || "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1170&auto=format&fit=crop"}
-                        title={data.name}
+                        title={typeof data.name === 'string' ? data.name : "Community image"}
                     />
                     <div className="absolute top-2 right-2 flex gap-1.5">
                         {data.is_demo && (
@@ -68,27 +85,27 @@ export default function DisplayCard({ data, onSelectTech }) {
                         gutterBottom
                         variant="h6"
                         component="h2"
-                        className="font-bold text-[#402e32] leading-snug line-clamp-1"
-                        sx={{ fontWeight: 700, color: '#402e32', fontSize: '1.2rem', mb: 0.5 }}
+                        className="font-bold text-[#402e32] leading-snug break-words line-clamp-2"
+                        sx={{ fontWeight: 700, color: '#402e32', fontSize: '1.2rem', mb: 0.5, wordBreak: 'break-word' }}
                     >
-                        {data.name}
+                        {String(data.name || '')}
                     </Typography>
 
                     <div className="flex items-center gap-1.5 text-xs text-[#8b5b30] font-medium">
                         {isOnline ? (
-                            <IoGlobeOutline className="text-sm shrink-0" />
+                            <IoGlobeOutline className="text-sm shrink-0" aria-hidden="true" />
                         ) : (
-                            <IoLocationOutline className="text-sm shrink-0" />
+                            <IoLocationOutline className="text-sm shrink-0" aria-hidden="true" />
                         )}
                         <span className="truncate">{locationLabel()}</span>
                     </div>
 
                     <Typography
                         variant="body2"
-                        className="text-stone-600 line-clamp-3 text-sm mt-1"
-                        sx={{ color: '#574843', minHeight: '3.6em' }}
+                        className="text-stone-600 line-clamp-3 text-sm mt-1 break-words"
+                        sx={{ color: '#574843', minHeight: '3.6em', wordBreak: 'break-word' }}
                     >
-                        {data.description || data.desc || "A welcoming tech community."}
+                        {String(data.description || data.desc || "A welcoming tech community.")}
                     </Typography>
 
                     {data.technologies && data.technologies.length > 0 && (
@@ -99,9 +116,9 @@ export default function DisplayCard({ data, onSelectTech }) {
                                     type="button"
                                     onClick={() => onSelectTech && onSelectTech(tech)}
                                     title={`Filter by ${tech}`}
-                                    className="text-xs px-2.5 py-0.5 rounded-full bg-[#f2ebe4] hover:bg-[#e7dbce] text-[#5A321A] font-medium transition-colors cursor-pointer"
+                                    className="text-xs px-2.5 py-0.5 rounded-full bg-[#f2ebe4] hover:bg-[#e7dbce] text-[#5A321A] font-medium transition-colors cursor-pointer break-all max-w-full truncate"
                                 >
-                                    #{tech}
+                                    #{String(tech)}
                                 </button>
                             ))}
                         </div>
@@ -110,11 +127,11 @@ export default function DisplayCard({ data, onSelectTech }) {
             </div>
 
             <CardActions className="flex items-center justify-between px-4 pb-4 pt-1 border-t border-[#8b5b30]/10 mt-auto">
-                {data.website_url || data.url ? (
+                {safeWebsiteUrl ? (
                     <Button
                         size="small"
                         component="a"
-                        href={data.website_url || data.url}
+                        href={safeWebsiteUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="!bg-[#5A321A] hover:!bg-[#402413] !text-[#e3ddd7] !font-medium !rounded-lg !px-3 !py-1 !text-xs !normal-case"
@@ -130,7 +147,7 @@ export default function DisplayCard({ data, onSelectTech }) {
                     <Button
                         size="small"
                         component="a"
-                        href={`mailto:${data.email}`}
+                        href={`mailto:${encodeURIComponent(data.email)}`}
                         className="!text-[#5A321A] hover:!bg-[#8b5b30]/10 !font-medium !rounded-lg !px-3 !py-1 !text-xs !normal-case"
                     >
                         Contact
