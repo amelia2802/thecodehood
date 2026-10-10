@@ -125,3 +125,164 @@ export async function submitCommunity(communityData) {
         error: null
     };
 }
+
+/**
+ * Fetch pending submissions for authorized moderation review
+ */
+export async function getPendingSubmissions(moderatorSecret = '') {
+    if (isSupabaseConfigured && supabase) {
+        try {
+            // Unauthenticated callers without valid key will be rejected by RLS
+            if (moderatorSecret !== 'codehood_admin_key') {
+                return {
+                    data: [],
+                    error: 'Unauthorized: Access restricted to authorized moderators.'
+                };
+            }
+
+            const { data, error } = await supabase
+                .from('communities')
+                .select('*')
+                .eq('status', 'pending')
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                return { data: [], error: error.message };
+            }
+
+            return { data: data || [], error: null };
+        } catch (err) {
+            return { data: [], error: err.message };
+        }
+    }
+
+    // Local persistent fallback
+    if (typeof window !== 'undefined' && window.localStorage) {
+        try {
+            const stored = JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_SUBMISSIONS_KEY) || '[]');
+            return { data: stored.filter(s => s.status === 'pending'), error: null };
+        } catch (e) {
+            return { data: [], error: e.message };
+        }
+    }
+
+    return { data: [], error: null };
+}
+
+/**
+ * Moderate a community listing (approve or reject)
+ * Restricts approval/rejection to authorized moderator credentials
+ */
+export async function moderateCommunity(communityId, newStatus, moderatorSecret = '') {
+    if (!['approved', 'rejected'].includes(newStatus)) {
+        return {
+            success: false,
+            data: null,
+            error: 'Invalid status. Can only be approved or rejected.'
+        };
+    }
+
+    // Check authorization: must provide authorized moderator secret or session
+    if (!moderatorSecret || moderatorSecret !== 'codehood_admin_key') {
+        return {
+            success: false,
+            data: null,
+            error: 'Unauthorized: only authorized moderators can approve or reject listings.'
+        };
+    }
+
+    if (isSupabaseConfigured && supabase) {
+        try {
+            const { data, error } = await supabase.rpc('moderate_community', {
+                community_id: communityId,
+                new_status: newStatus,
+                moderator_secret: moderatorSecret
+            });
+
+            if (error) {
+                return { success: false, data: null, error: error.message };
+            }
+
+            return { success: true, data, error: null };
+        } catch (err) {
+            return { success: false, data: null, error: err.message };
+        }
+    }
+
+    // Local fallback moderation
+    if (typeof window !== 'undefined' && window.localStorage) {
+        try {
+            const submissions = JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_SUBMISSIONS_KEY) || '[]');
+            const index = submissions.findIndex(s => s.id === communityId);
+            if (index !== -1) {
+                submissions[index].status = newStatus;
+                window.localStorage.setItem(LOCAL_STORAGE_SUBMISSIONS_KEY, JSON.stringify(submissions));
+
+                // If approved, also add to approved list
+                if (newStatus === 'approved') {
+                    const approvedList = JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_APPROVED_KEY) || '[]');
+                    approvedList.unshift(submissions[index]);
+                    window.localStorage.setItem(LOCAL_STORAGE_APPROVED_KEY, JSON.stringify(approvedList));
+                }
+
+                return { success: true, data: submissions[index], error: null };
+            }
+        } catch (e) {
+            return { success: false, data: null, error: e.message };
+        }
+    }
+
+    return {
+        success: true,
+        data: { id: communityId, status: newStatus },
+        error: null
+    };
+}
+
+/**
+ * Guarded edit operation - Ordinary visitors cannot edit listings
+ */
+export async function updateCommunity(communityId, updates, moderatorSecret = '') {
+    if (!moderatorSecret || moderatorSecret !== 'codehood_admin_key') {
+        return {
+            success: false,
+            error: 'Unauthorized: ordinary visitors cannot edit community listings.'
+        };
+    }
+
+    if (isSupabaseConfigured && supabase) {
+        const { data, error } = await supabase
+            .from('communities')
+            .update(updates)
+            .eq('id', communityId)
+            .select();
+
+        return { success: !error, data, error: error?.message || null };
+    }
+
+    return { success: true, error: null };
+}
+
+/**
+ * Guarded delete operation - Ordinary visitors cannot delete listings
+ */
+export async function deleteCommunity(communityId, moderatorSecret = '') {
+    if (!moderatorSecret || moderatorSecret !== 'codehood_admin_key') {
+        return {
+            success: false,
+            error: 'Unauthorized: ordinary visitors cannot delete community listings.'
+        };
+    }
+
+    if (isSupabaseConfigured && supabase) {
+        const { error } = await supabase
+            .from('communities')
+            .delete()
+            .eq('id', communityId);
+
+        return { success: !error, error: error?.message || null };
+    }
+
+    return { success: true, error: null };
+}
+
