@@ -1,0 +1,55 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4KV99TMH3HH1GWP019YDAQD",
+  "session_id": "c64ec7f8-cf09-4081-b7dc-09302556bfff",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-10T21:25:14.8650277Z",
+  "branch": "backend",
+  "checkpoints_count": 1,
+  "save_step_count": 2,
+  "files_touched": [
+    "android-chrome-192x192.png",
+    "android-chrome-512x512.png",
+    "apple-touch-icon.png",
+    "favicon-16x16.png",
+    "favicon-32x32.png",
+    "favicon.ico",
+    "index.html",
+    "package-lock.json",
+    "package.json",
+    "site.webmanifest",
+    "src/App.jsx",
+    "src/components/Catalogue.jsx",
+    "src/test_lab6.js",
+    "src/utilities/Form.jsx",
+    "src/utilities/communityService.js",
+    "src/utilities/supabaseClient.js"
+  ],
+  "agent": "Antigravity",
+  "model": "",
+  "turn_id": "7534c839babf",
+  "session_metrics": {
+    "turn_count": 5
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-10T21:25:14.8126998Z",
+    "agent_lines": 350,
+    "agent_removed": 14,
+    "human_added": 0,
+    "human_modified": 4067,
+    "human_removed": 0,
+    "total_committed": 4417,
+    "total_lines_changed": 4431,
+    "agent_percentage": 8.214849921011059,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}
