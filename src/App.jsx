@@ -1,8 +1,9 @@
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Catalogue from './components/Catalogue';
 import Footer from './components/Footer';
+import { getApprovedCommunities } from './utilities/communityService';
 
 import './App.css';
 
@@ -13,6 +14,54 @@ function App() {
   const [geoStatus, setGeoStatus] = useState(null);
   const [isGeoLoading, setIsGeoLoading] = useState(false);
   const [submissions, setSubmissions] = useState([]);
+
+  // Database operations state (Loading, Error, Data)
+  const [communities, setCommunities] = useState([]);
+  const [dbLoading, setDbLoading] = useState(true);
+  const [dbError, setDbError] = useState(null);
+
+  const fetchCommunities = useCallback(() => {
+    setDbLoading(true);
+    setDbError(null);
+
+    getApprovedCommunities()
+      .then((result) => {
+        if (result.error) {
+          setDbError(result.error);
+        }
+        setCommunities(result.data || []);
+      })
+      .catch((err) => {
+        setDbError(err.message || 'Error loading communities');
+      })
+      .finally(() => {
+        setDbLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    let ignore = false;
+    getApprovedCommunities()
+      .then((result) => {
+        if (!ignore) {
+          if (result.error) {
+            setDbError(result.error);
+          }
+          setCommunities(result.data || []);
+          setDbLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (!ignore) {
+          setDbError(err.message || 'Error loading communities');
+          setDbLoading(false);
+        }
+      });
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   const scrollToCommunities = () => {
     targetRef.current?.scrollIntoView({
@@ -33,6 +82,7 @@ function App() {
   };
 
   const handleAddSubmission = (submission) => {
+    // Keep submission pending; do not add directly to approved communities
     setSubmissions((prev) => [submission, ...prev]);
   };
 
@@ -126,6 +176,10 @@ function App() {
         setGeoStatus={setGeoStatus}
         onSubmitSuccess={handleAddSubmission}
         submissions={submissions}
+        communities={communities}
+        dbLoading={dbLoading}
+        dbError={dbError}
+        onRetry={fetchCommunities}
       />
       <Footer />
     </div>

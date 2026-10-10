@@ -5,7 +5,8 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import Chip from '@mui/material/Chip';
 import Alert from '@mui/material/Alert';
-import { validateCommunitySubmission, createPendingSubmission } from './validation';
+import { validateCommunitySubmission } from './validation';
+import { submitCommunity } from './communityService';
 
 const AVAILABLE_TECH_TAGS = [
     'JavaScript',
@@ -71,7 +72,7 @@ export default function Form({ onSubmitSuccess, onClose }) {
         }
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
 
         const { isValid, errors: validationErrors } = validateCommunitySubmission(formData);
@@ -84,16 +85,23 @@ export default function Form({ onSubmitSuccess, onClose }) {
         setIsSubmitting(true);
         setErrors({});
 
-        // Prevent repeated submissions while submitting
-        setTimeout(() => {
-            const submission = createPendingSubmission(formData);
+        try {
+            const res = await submitCommunity(formData);
             setIsSubmitting(false);
-            setSubmittedData(submission);
 
-            if (onSubmitSuccess) {
-                onSubmitSuccess(submission);
+            if (!res.success) {
+                setErrors({ submit: res.error || 'Database submission failed. Please try again.' });
+                return;
             }
-        }, 500);
+
+            setSubmittedData(res.data);
+            if (onSubmitSuccess) {
+                onSubmitSuccess(res.data);
+            }
+        } catch (err) {
+            setIsSubmitting(false);
+            setErrors({ submit: err.message || 'An unexpected error occurred.' });
+        }
     };
 
     const handleUploadClick = () => {
@@ -232,7 +240,7 @@ export default function Form({ onSubmitSuccess, onClose }) {
 
             {Object.keys(errors).length > 0 && (
                 <Alert severity="error" className="w-full text-left" role="alert">
-                    Please correct the highlighted fields before submitting.
+                    {errors.submit || "Please correct the highlighted fields before submitting."}
                 </Alert>
             )}
 

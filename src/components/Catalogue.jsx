@@ -43,7 +43,10 @@ export default function Catalogue({
     setGeoStatus,
     communities = sampleData,
     onSubmitSuccess,
-    submissions = []
+    submissions = [],
+    dbLoading = false,
+    dbError = null,
+    onRetry
 }) {
     const filteredCommunities = useMemo(() => {
         const query = (searchQuery || "").trim().toLowerCase();
@@ -229,8 +232,33 @@ export default function Catalogue({
                 )}
             </div>
 
+            {/* Database Operation States: Loading & Error */}
+            {dbLoading && (
+                <div role="status" className="flex items-center justify-center gap-3 p-8 text-[#5A321A]">
+                    <span className="w-5 h-5 border-2 border-[#5A321A] border-t-transparent rounded-full animate-spin" />
+                    <span className="text-sm font-medium">Loading communities from database...</span>
+                </div>
+            )}
+
+            {dbError && !dbLoading && (
+                <div role="alert" className="flex flex-col items-center gap-2 p-4 max-w-md bg-amber-50 border border-amber-200 rounded-xl text-amber-900 text-sm text-center">
+                    <IoAlertCircleOutline className="text-2xl text-amber-700" />
+                    <p className="font-semibold">Unable to load communities from database</p>
+                    <p className="text-xs text-stone-600">{dbError}</p>
+                    {onRetry && (
+                        <button
+                            type="button"
+                            onClick={onRetry}
+                            className="mt-2 text-xs bg-[#5A321A] text-[#e3ddd7] px-3 py-1.5 rounded-lg font-medium hover:bg-[#402413] transition-colors cursor-pointer"
+                        >
+                            Retry Loading
+                        </button>
+                    )}
+                </div>
+            )}
+
             {/* Results Grid or Empty State */}
-            {filteredCommunities.length === 0 ? (
+            {!dbLoading && filteredCommunities.length === 0 ? (
                 <div className="flex flex-col items-center justify-center text-center p-10 max-w-lg bg-[#fffdfa] rounded-2xl border border-dashed border-[#8b5b30]/30 shadow-xs my-4">
                     <div className="p-3 bg-[#f2ebe4] rounded-full text-[#8b5b30] mb-3">
                         <IoSearchOutline className="text-3xl" />
