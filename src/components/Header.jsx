@@ -10,7 +10,8 @@ export default function Header({
     onSearchSubmit,
     onClearSearch,
     onLocationClick,
-    isGeoLoading = false
+    isGeoLoading = false,
+    onSubmitSuccess
 }) {
     return (
         <header className="flex z-10 items-center px-4 md:px-8 py-3.5 justify-between text-lg bg-[#faf6f0]/90 backdrop-blur-sm sticky top-0 border-b border-[#8b5b30]/15 shadow-xs">
@@ -36,8 +37,12 @@ export default function Header({
             </div>
 
             <div className="flex items-center gap-3">
+                <SubmitForm
+                    buttonText="Submit Community"
+                    buttonClassName="text-xs md:text-sm font-semibold text-[#5A321A] hover:text-[#402413] px-3 py-1.5 rounded-lg border border-[#5A321A]/30 hover:bg-[#8b5b30]/10 transition-colors cursor-pointer"
+                    onSubmitSuccess={onSubmitSuccess}
+                />
                 <Explore onClick={onExploreClick} />
-                <SubmitForm />
             </div>
         </header>
     );
