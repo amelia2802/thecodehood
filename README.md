@@ -1,16 +1,76 @@
-# React + Vite
+# TheCodeHood
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+TheCodeHood is a directory for discovering local tech communities and meetups. Its goal is to help people find developer groups, tech events, and opportunities to connect with others in the tech community.
 
-Currently, two official plugins are available:
+**Live Demo:** https://thecodehood.onrender.com
+<img width="1896" height="902" alt="Screenshot 2026-10-11 033626" src="https://github.com/user-attachments/assets/80f9084e-58e2-4a56-8eff-7171d10a9b67" />
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+- Search for tech communities by location.
+- Browse community cards and their details.
+- Explore community information and joining links.
+- Submit a community for consideration, if submission is implemented.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Technology Stack
 
-## Expanding the ESLint configuration
+- React
+- JavaScript
+- Vite
+- Tailwind CSS
+- Material UI
+- Supabase
+- Render Static Sites for frontend hosting
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Run Locally
+
+Requirements: Node.js and npm.
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/amelia2802/thecodehood.git
+   cd thecodehood
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Create a `.env.local` file in the project root if environment variables are required.
+
+4. Add the required variables using the names expected by the application:
+
+   ```dotenv
+   VITE_SUPABASE_URL=your-project-url
+   VITE_SUPABASE_PUBLISHABLE_KEY=your-publishable-key
+   ```
+
+   Only include these variables if the application uses them. Never add a Supabase secret or service-role key to frontend environment variables.
+
+5. Start the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+6. Open the local URL shown in the terminal.
+
+## Build and Test
+
+```bash
+npm run build
+npm run lint
+```
+
+The production build is generated in the `dist` directory.
+
+## Deployment
+
+The frontend is deployed as a Render Static Site.
+
+## Contributing
+
+Issues and suggestions are welcome. Please describe bugs clearly and include steps to reproduce them.
