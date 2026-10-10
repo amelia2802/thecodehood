@@ -1,7 +1,7 @@
 import { GiTechnoHeart } from "react-icons/gi";
 import Search from "../utilities/Search.jsx"
-import SignUp from "../utilities/SignUp.jsx"
-export default function Header(){
+import Explore from "../utilities/Explore.jsx"
+export default function Header({ onExploreClick }){
     return(
         <header className="flex z-10 items-center px-6 py-3 justify-between text-lg">
             <section className="flex items-center gap-2">
@@ -9,7 +9,7 @@ export default function Header(){
                 <h1>theCodehood.</h1>
             </section>
             <Search />
-            <SignUp />
+            <Explore onClick={onExploreClick}/>
         </header>
     )
 }
