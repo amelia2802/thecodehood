@@ -41,7 +41,9 @@ export default function Catalogue({
     isGeoLoading = false,
     geoStatus,
     setGeoStatus,
-    communities = sampleData
+    communities = sampleData,
+    onSubmitSuccess,
+    submissions = []
 }) {
     const filteredCommunities = useMemo(() => {
         const query = (searchQuery || "").trim().toLowerCase();
@@ -187,6 +189,11 @@ export default function Catalogue({
                     {selectedTech !== "All" && (
                         <span> in <span className="text-[#5A321A] font-semibold">{selectedTech}</span></span>
                     )}
+                    {submissions.length > 0 && (
+                        <span className="ml-2 text-xs text-amber-900 bg-amber-100/70 px-2 py-0.5 rounded-full font-medium">
+                            ({submissions.length} submission{submissions.length === 1 ? '' : 's'} pending moderation)
+                        </span>
+                    )}
                 </div>
 
                 {hasActiveFilters && (
@@ -247,7 +254,7 @@ export default function Catalogue({
                         >
                             Clear Search &amp; Filters
                         </button>
-                        <SubmitForm />
+                        <SubmitForm onSubmitSuccess={onSubmitSuccess} />
                     </div>
                 </div>
             ) : (

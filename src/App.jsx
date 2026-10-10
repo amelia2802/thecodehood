@@ -12,6 +12,7 @@ function App() {
   const [selectedTech, setSelectedTech] = useState('All');
   const [geoStatus, setGeoStatus] = useState(null);
   const [isGeoLoading, setIsGeoLoading] = useState(false);
+  const [submissions, setSubmissions] = useState([]);
 
   const scrollToCommunities = () => {
     targetRef.current?.scrollIntoView({
@@ -29,6 +30,10 @@ function App() {
 
   const handleClearSearch = () => {
     setSearchQuery('');
+  };
+
+  const handleAddSubmission = (submission) => {
+    setSubmissions((prev) => [submission, ...prev]);
   };
 
   const handleGeolocation = () => {
@@ -102,8 +107,12 @@ function App() {
         onClearSearch={handleClearSearch}
         onLocationClick={handleGeolocation}
         isGeoLoading={isGeoLoading}
+        onSubmitSuccess={handleAddSubmission}
       />
-      <Hero onExploreClick={scrollToCommunities} />
+      <Hero
+        onExploreClick={scrollToCommunities}
+        onSubmitSuccess={handleAddSubmission}
+      />
       <Catalogue
         refProp={targetRef}
         searchQuery={searchQuery}
@@ -115,6 +124,8 @@ function App() {
         isGeoLoading={isGeoLoading}
         geoStatus={geoStatus}
         setGeoStatus={setGeoStatus}
+        onSubmitSuccess={handleAddSubmission}
+        submissions={submissions}
       />
       <Footer />
     </div>

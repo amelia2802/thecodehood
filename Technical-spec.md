@@ -159,14 +159,14 @@
 
 **Tests:**
 
-* Waiting: 1. Submitting an empty form should display validation messages.
-* Waiting: 2. Submitting a valid form should create a community submission.
-* Waiting: 3. An invalid website URL should be rejected with a clear message.
-* Waiting: 4. A valid submission should include the required community fields.
-* Waiting: 5. The form should remain usable with keyboard navigation.
-* Waiting: 6. Success and error messages should be understandable to screen-reader users.
-* Waiting: 7. A submission should not be described as permanently saved unless it has been persisted successfully.
-* Waiting: 8. New user submissions should not automatically become publicly approved listings.
+* Passed: 1. Submitting an empty form should display validation messages.
+* Passed: 2. Submitting a valid form should create a community submission.
+* Passed: 3. An invalid website URL should be rejected with a clear message.
+* Passed: 4. A valid submission should include the required community fields.
+* Passed: 5. The form should remain usable with keyboard navigation.
+* Passed: 6. Success and error messages should be understandable to screen-reader users.
+* Passed: 7. A submission should not be described as permanently saved unless it has been persisted successfully.
+* Passed: 8. New user submissions should not automatically become publicly approved listings.
 
 ---
 
