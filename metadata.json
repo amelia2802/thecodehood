@@ -1,0 +1,28 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4MS738XHMYJCWFSB4RMR5F5",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "README.md",
+    "eslint.config.js",
+    "package-lock.json",
+    "package.json",
+    "server/index.js",
+    "server/test_matchmaker.js",
+    "server/verifiedCommunities.js",
+    "src/App.jsx",
+    "src/components/CommunityMatchmaker.jsx",
+    "src/utilities/matchmakerService.js",
+    "vite.config.js"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ]
+}

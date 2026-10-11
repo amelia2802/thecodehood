@@ -1,0 +1,55 @@
+Without cahning my site color and design perform and test this 
+I have an existing React + Vite + JavaScript + Tailwind CSS project called TheCodeHood. It is a directory for finding tech communities and meetups. My GitHub repository is [https://github.com/amelia2802/thecodehood](https://github.com/amelia2802/thecodehood).
+I am participating in the Hacktoberfest Open-Source AI Challenge, Week 1: Touch Grass. I need a small, working feature that I can finish and deploy quickly.
+Build: TheCodeHood Community Matchmaker
+Add a polished section to my existing website where users can discover ways to connect with tech communities offline.
+User experience
+Create a card with:
+Heading: "Your next connection starts outside."
+Short description: "Find your people, step away from the screen, and make something happen in real life."
+Interest input: web development, AI, open source, cybersecurity, design, or other.
+Location input: city, state, or ZIP code.
+Preferred meetup: in-person, online, or either.
+Social comfort: "I'm new to meetups", "I'm a little nervous", or "I'm ready to network".
+A button labelled "Find my community plan".
+After submission, show an AI-generated plan with:
+A short, encouraging recommendation.
+Two or three practical steps to find and attend a relevant meetup.
+One small offline challenge, such as attending a local tech meetup, visiting a coworking event, or talking to one developer.
+A simple preparation checklist.
+A reminder to verify event details and availability before travelling.
+Make the experience welcoming to introverts and beginners. Do not shame people for preferring online communities.
+Open-source AI requirements
+Use an open-weight language model through Hugging Face Inference Providers. Use the official OpenAI-compatible endpoint:
+[https://router.huggingface.co/v1/chat/completions](https://router.huggingface.co/v1/chat/completions)
+Select a currently available open-weight model supported by the provider. Verify its model ID and license rather than assuming availability.
+Create a small Node.js + Express backend endpoint, for example POST /api/matchmaker. The backend must call the model and return the generated plan.
+Security requirements:
+Store HF_TOKEN as a server-side environment variable.
+Never expose HF_TOKEN or other private credentials in React code, VITE_ variables, Git commits, or browser responses.
+Validate and limit user input.
+Handle API errors and loading states gracefully.
+Do not send unnecessary personal data to the model.
+Fit my existing project
+Inspect the repository and existing components before changing anything.
+Reuse the existing layout, header, footer, styles, and community data where appropriate.
+Add a reusable React component and integrate it into the existing page without replacing the whole website.
+Match the existing design. Make the new section responsive, accessible, and visually polished.
+If the repository already has real community listings, use those as the source of truth. Never invent real organizations, events, addresses, dates, or joining links.
+Make it clear that AI suggestions are generated guidance, not verified live event listings.
+Deployment
+Keep the existing Vite frontend deployable on Render. Provide the backend as a separate Render Web Service if necessary.
+Explain the exact build/start commands and required environment variables. Configure CORS to allow only the actual deployed frontend origin. Use the Render-provided PORT value. Update the frontend to call the deployed backend URL through an environment variable such as VITE_API_URL.
+Update README.md with the feature, architecture, setup instructions, environment variables, model/provider attribution, deployment links, and remaining limitations.
+Testing and delivery
+Ensure npm run build succeeds.
+Run npm run lint if available and fix relevant issues.
+Test input validation, loading, successful responses, and API failures.
+Verify that the model token is not present in the frontend bundle.
+Do not claim deployment or live testing succeeded unless it actually did.
+Show me the files changed and the exact commands and dashboard settings I must use.
+Keep the scope small. Do not add authentication, payments, a new database, or unrelated features. Do not replace my existing website. Prioritize a functioning, honest MVP over extra features.
+
+---
+
+preserve this session transcript to your connected DEV account and  enter it in any sponsor challenges it fits.

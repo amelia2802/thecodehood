@@ -1,0 +1,63 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4MS738XHMYJCWFSB4RMR5F5",
+  "session_id": "aaf2ce4b-b898-4389-8f91-dec77a831e08",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-11T06:08:20.0750328Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "save_step_count": 1,
+  "files_touched": [
+    "README.md",
+    "eslint.config.js",
+    "package-lock.json",
+    "package.json",
+    "server/index.js",
+    "server/test_matchmaker.js",
+    "server/verifiedCommunities.js",
+    "src/App.jsx",
+    "src/components/CommunityMatchmaker.jsx",
+    "src/utilities/matchmakerService.js",
+    "vite.config.js"
+  ],
+  "agent": "Antigravity",
+  "model": "",
+  "turn_id": "5011d9ba50e3",
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-11T06:08:20.0282203Z",
+    "agent_lines": 1460,
+    "agent_removed": 10,
+    "human_added": 141,
+    "human_modified": 5115,
+    "human_removed": 0,
+    "total_committed": 6716,
+    "total_lines_changed": 6726,
+    "agent_percentage": 21.855486173059766,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 141,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".agents/AGENTS.md": 141
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 141,
+      "user_lines_removed": 0,
+      "agent_lines_added": 6575,
+      "agent_lines_removed": 4281,
+      "user_added_per_file": {
+        ".agents/AGENTS.md": 141
+      }
+    }
+  ]
+}
