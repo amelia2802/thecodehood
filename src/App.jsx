@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
+import CommunityMatchmaker from './components/CommunityMatchmaker';
 import Catalogue from './components/Catalogue';
 import Footer from './components/Footer';
 import { getApprovedCommunities } from './utilities/communityService';
@@ -163,6 +164,7 @@ function App() {
         onExploreClick={scrollToCommunities}
         onSubmitSuccess={handleAddSubmission}
       />
+      <CommunityMatchmaker />
       <Catalogue
         refProp={targetRef}
         searchQuery={searchQuery}
