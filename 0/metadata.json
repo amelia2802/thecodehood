@@ -1,0 +1,18 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4MS8G24XNG563FB3RFTFN9V",
+  "session_id": "aaf2ce4b-b898-4389-8f91-dec77a831e08",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-11T06:09:05.0704004Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": null,
+  "agent": "Antigravity",
+  "model": "",
+  "turn_id": "5011d9ba50e3",
+  "checkpoint_transcript_start": 298,
+  "transcript_lines_at_start": 298,
+  "session_metrics": {
+    "turn_count": 1
+  }
+}
