@@ -1,0 +1,31 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4RQ2GCKPZAYDFPRXCFRADR8",
+  "session_id": "c64ec7f8-cf09-4081-b7dc-09302556bfff",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-12T18:47:50.7699229Z",
+  "branch": "frontend",
+  "checkpoints_count": 2,
+  "save_step_count": 1,
+  "files_touched": [
+    "src/components/Hero.jsx"
+  ],
+  "agent": "Antigravity",
+  "model": "",
+  "turn_id": "2914ca232109",
+  "session_metrics": {
+    "turn_count": 7
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-12T18:47:50.6343979Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 168,
+    "human_modified": 18,
+    "human_removed": 0,
+    "total_committed": 168,
+    "total_lines_changed": 223,
+    "agent_percentage": 0,
+    "metric_version": 2
+  }
+}
