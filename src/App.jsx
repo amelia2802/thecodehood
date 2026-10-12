@@ -149,7 +149,7 @@ function App() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#faf6f0] text-[#402e32] gap-10 font-sans w-full max-w-full overflow-x-hidden">
+    <div className="flex flex-col min-h-screen bg-[#faf6f0] text-[#402e32] font-sans w-full max-w-full overflow-x-hidden">
       <Header
         onExploreClick={scrollToCommunities}
         searchQuery={searchQuery}
