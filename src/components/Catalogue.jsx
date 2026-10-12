@@ -286,7 +286,7 @@ export default function Catalogue({
                     </div>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full max-w-7xl px-4 items-stretch">
+                <div className="grid w-full max-w-7xl grid-cols-2 items-stretch gap-3 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
                     {filteredCommunities.map((community) => (
                         <DisplayCard
                             key={community.id}

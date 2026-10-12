@@ -4,21 +4,42 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import Form from './Form';
 
-export default function SubmitForm({ onSubmitSuccess }){
+export default function SubmitForm({
+    onSubmitSuccess,
+    buttonText = 'Submit a Community',
+    buttonClassName = 'text-[#e3ddd7] bg-[#8b5b30] px-3 py-2 rounded-lg text-base'
+}) {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    return(
+    return (
         <div>
-            <button onClick={handleOpen} className="text-[#e3ddd7] bg-[#8b5b30] px-3 py-2 rounded-lg text-base">Submit a Community</button>
+            <button type="button" onClick={handleOpen} className={buttonClassName}>
+                {buttonText}
+            </button>
             <Modal
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#e3ddd7] p-4 w-150 rounded shadow-sm max-h-[90vh] overflow-y-auto">
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        boxSizing: 'border-box',
+                        width: 'min(42rem, calc(100% - 2rem))',
+                        maxHeight: '90dvh',
+                        overflowY: 'auto',
+                        bgcolor: '#e3ddd7',
+                        p: { xs: 2, sm: 3 },
+                        borderRadius: 1,
+                        boxShadow: 2
+                    }}
+                >
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                         Submit Your Community
                     </Typography>
@@ -28,5 +49,5 @@ export default function SubmitForm({ onSubmitSuccess }){
                 </Box>
             </Modal>
         </div>
-    )
+    );
 }

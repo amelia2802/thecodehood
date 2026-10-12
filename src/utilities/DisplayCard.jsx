@@ -64,7 +64,7 @@ export default function DisplayCard({ data, onSelectTech }) {
             <div>
                 <div className="relative">
                     <CardMedia
-                        sx={{ height: 160 }}
+                        sx={{ height: { xs: 110, sm: 160 } }}
                         image={data.img || "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1170&auto=format&fit=crop"}
                         title={typeof data.name === 'string' ? data.name : "Community image"}
                     />
@@ -86,7 +86,7 @@ export default function DisplayCard({ data, onSelectTech }) {
                         variant="h6"
                         component="h2"
                         className="font-bold text-[#402e32] leading-snug break-words line-clamp-2"
-                        sx={{ fontWeight: 700, color: '#402e32', fontSize: '1.2rem', mb: 0.5, wordBreak: 'break-word' }}
+                        sx={{ fontWeight: 700, color: '#402e32', fontSize: { xs: '0.95rem', sm: '1.2rem' }, mb: 0.5, wordBreak: 'break-word' }}
                     >
                         {String(data.name || '')}
                     </Typography>

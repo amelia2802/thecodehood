@@ -417,7 +417,7 @@ export default function Form({ onSubmitSuccess, onClose }) {
             <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-1/4 text-[#e3ddd7] bg-[#8b5b30] hover:bg-[#5A321A] disabled:opacity-50 px-3 py-2 rounded-lg text-base cursor-pointer transition-colors"
+                className="w-full text-[#e3ddd7] bg-[#8b5b30] hover:bg-[#5A321A] disabled:opacity-50 px-3 py-2 rounded-lg text-base cursor-pointer transition-colors sm:w-auto"
             >
                 {isSubmitting ? "Submitting..." : "Submit"}
             </button>
