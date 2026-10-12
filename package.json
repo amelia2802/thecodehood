@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "test": "node src/test_lab4.js && node src/test_lab5.js && node src/test_lab6.js && node src/test_lab7.js",
+    "test:matchmaker": "node server/test_matchmaker.js",
     "lint": "eslint .",
+    "server": "node server/index.js",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -17,6 +19,9 @@
     "@mui/styled-engine-sc": "^9.5.0",
     "@supabase/supabase-js": "^2.109.0",
     "@tailwindcss/vite": "^4.3.3",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.7",
+    "express": "^5.3.0",
     "react": "^17.0.0 || ^18.0.0 || ^19.0.0",
     "react-dom": "^17.0.0 || ^18.0.0 || ^19.0.0",
     "react-icons": "^5.7.0",

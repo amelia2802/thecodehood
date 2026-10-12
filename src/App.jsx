@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
+import CommunityMatchmaker from './components/CommunityMatchmaker';
 import Catalogue from './components/Catalogue';
 import Footer from './components/Footer';
 import { getApprovedCommunities } from './utilities/communityService';
@@ -148,7 +149,7 @@ function App() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#faf6f0] text-[#402e32] gap-10 font-sans w-full max-w-full overflow-x-hidden">
+    <div className="flex flex-col min-h-screen bg-[#faf6f0] text-[#402e32] font-sans w-full max-w-full overflow-x-hidden">
       <Header
         onExploreClick={scrollToCommunities}
         searchQuery={searchQuery}
@@ -163,6 +164,7 @@ function App() {
         onExploreClick={scrollToCommunities}
         onSubmitSuccess={handleAddSubmission}
       />
+      <CommunityMatchmaker />
       <Catalogue
         refProp={targetRef}
         searchQuery={searchQuery}
