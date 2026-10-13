@@ -1,0 +1,42 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4TXFFKVFMQX23VN7SJE1QT6",
+  "session_id": "5250b65c-eb42-463d-b45c-3b76d8f9b86f",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-13T15:18:17.1647609Z",
+  "branch": "frontend",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "README.md"
+  ],
+  "agent": "Antigravity",
+  "model": "",
+  "turn_id": "a72fcb856cd9",
+  "initial_attribution": {
+    "calculated_at": "2026-10-13T15:18:17.1084984Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 388,
+    "total_committed": 37,
+    "total_lines_changed": 426,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 350,
+      "user_lines_removed": 388,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "src/utilities/Form.jsx": 350
+      },
+      "user_removed_per_file": {
+        "src/utilities/Form.jsx": 388
+      }
+    }
+  ]
+}
