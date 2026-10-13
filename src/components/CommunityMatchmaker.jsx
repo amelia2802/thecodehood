@@ -1,7 +1,6 @@
 import { useState, useRef } from 'react';
 import { fetchCommunityPlan } from '../utilities/matchmakerService';
 import {
-  IoSparklesOutline,
   IoFootstepsOutline,
   IoCheckmarkCircleOutline,
   IoAlertCircleOutline,
@@ -13,7 +12,6 @@ import {
   IoPeopleOutline,
   IoCheckmarkSharp,
 } from 'react-icons/io5';
-import { GiGrass } from 'react-icons/gi';
 
 const PRESET_INTERESTS = [
   'web development',
@@ -21,6 +19,7 @@ const PRESET_INTERESTS = [
   'open source',
   'cybersecurity',
   'design',
+  'Women in Tech',
   'other',
 ];
 
@@ -156,32 +155,19 @@ export default function CommunityMatchmaker() {
       className="w-full max-w-5xl mx-auto px-4 sm:px-6 my-2"
     >
       <div className="bg-[#fffdfa] rounded-2xl border border-[#8b5b30]/20 shadow-md overflow-hidden">
-        {/* Banner header with Hacktoberfest Touch Grass badge */}
         <div className="bg-linear-to-r from-[#8b5b30]/15 via-[#d2b8a0]/30 to-[#8b5b30]/15 px-6 py-6 sm:px-8 sm:py-8 border-b border-[#8b5b30]/15">
-          <div className="flex flex-wrap items-center justify-between gap-3 mb-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#8b5b30]/15 text-[#5A321A] border border-[#8b5b30]/25">
-              <GiGrass className="text-emerald-700 text-sm" />
-              Hacktoberfest Challenge: Touch Grass
-            </span>
-            <span className="text-xs text-[#8b5b30] flex items-center gap-1 font-medium">
-              <IoSparklesOutline className="text-amber-700" />
-              Open-Source AI Matchmaker
-            </span>
-          </div>
 
           <h2 className="text-2xl sm:text-3xl font-bold text-[#5A321A] tracking-tight">
-            Your next connection starts outside.
+            Networking Planner
           </h2>
           <p className="mt-2 text-base sm:text-lg text-[#402e32] max-w-2xl leading-relaxed">
-            Find your people, step away from the screen, and make something happen in real life.
+            Never leave a meetup without making a new friend
           </p>
         </div>
 
-        {/* Content Body: Form or Generated Plan */}
         <div className="p-6 sm:p-8">
           {!planResult ? (
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Interest Selector */}
               <div>
                 <label className="block text-sm font-semibold text-[#5A321A] mb-2">
                   What tech topics spark your curiosity?
@@ -247,9 +233,7 @@ export default function CommunityMatchmaker() {
                 </p>
               </div>
 
-              {/* Two-column layout for Meetup Format & Comfort Level */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Preferred Meetup */}
                 <div>
                   <label className="block text-sm font-semibold text-[#5A321A] mb-2">
                     Preferred meetup format
@@ -286,7 +270,6 @@ export default function CommunityMatchmaker() {
                   </div>
                 </div>
 
-                {/* Social Comfort Level */}
                 <div>
                   <label className="block text-sm font-semibold text-[#5A321A] mb-2">
                     Social comfort & energy level
@@ -324,7 +307,6 @@ export default function CommunityMatchmaker() {
                 </div>
               </div>
 
-              {/* Error Announcement */}
               {formError && (
                 <div
                   role="alert"
@@ -334,7 +316,7 @@ export default function CommunityMatchmaker() {
                   <div className="flex-1">
                     <p className="font-semibold">Notice</p>
                     <p className="text-xs sm:text-sm mt-0.5">{formError}</p>
-                    {formError.includes('HF_TOKEN') && (
+                    {formError.includes('OPENAI_API_KEY') && (
                       <button
                         type="button"
                         onClick={handleLoadDemoPlan}
@@ -347,7 +329,6 @@ export default function CommunityMatchmaker() {
                 </div>
               )}
 
-              {/* Submit CTA */}
               <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="flex items-center gap-2 text-xs text-[#8b5b30]">
                   <IoHeartOutline className="text-sm text-[#8b5b30]" />
@@ -406,7 +387,6 @@ export default function CommunityMatchmaker() {
               {/* Recommendation card */}
               <div className="p-5 sm:p-6 rounded-xl bg-linear-to-br from-[#faf6f0] to-[#f4ebe1] border border-[#8b5b30]/25">
                 <div className="flex items-center gap-2 text-[#5A321A] font-semibold text-base mb-2">
-                  <IoSparklesOutline className="text-[#ab5709] text-xl" />
                   <h3>Your Personalized Recommendation</h3>
                 </div>
                 <p className="text-sm sm:text-base text-[#402e32] leading-relaxed">
@@ -414,18 +394,17 @@ export default function CommunityMatchmaker() {
                 </p>
               </div>
 
-              {/* Offline Challenge */}
               {planResult.offlineChallenge && (
                 <div className="p-5 sm:p-6 rounded-xl bg-[#8b5b30]/10 border-2 border-dashed border-[#8b5b30]/35 flex items-start gap-3.5">
                   <div className="p-2.5 rounded-full bg-[#8b5b30] text-[#faf6f0] shrink-0 mt-0.5">
-                    <GiGrass className="text-xl" />
+                    
                   </div>
                   <div>
                     <span className="text-xs font-bold tracking-wider uppercase text-[#8b5b30]">
                       Week 1 Offline Challenge
                     </span>
                     <h4 className="text-base sm:text-lg font-bold text-[#5A321A] mt-0.5">
-                      Touch Grass Micro-Goal
+                      Micro-Goal
                     </h4>
                     <p className="mt-1 text-sm sm:text-base text-[#402e32] leading-relaxed">
                       {planResult.offlineChallenge}
@@ -434,9 +413,7 @@ export default function CommunityMatchmaker() {
                 </div>
               )}
 
-              {/* Two columns: Steps & Preparation Checklist */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Practical Steps */}
                 <div className="p-5 rounded-xl border border-[#8b5b30]/20 bg-[#fffdfa]">
                   <div className="flex items-center gap-2 text-[#5A321A] font-semibold text-base mb-3.5">
                     <IoFootstepsOutline className="text-[#8b5b30] text-lg" />
@@ -454,7 +431,7 @@ export default function CommunityMatchmaker() {
                   </ol>
                 </div>
 
-                {/* Preparation Checklist */}
+
                 <div className="p-5 rounded-xl border border-[#8b5b30]/20 bg-[#fffdfa]">
                   <div className="flex items-center justify-between mb-3.5">
                     <div className="flex items-center gap-2 text-[#5A321A] font-semibold text-base">
@@ -495,7 +472,6 @@ export default function CommunityMatchmaker() {
                 </div>
               </div>
 
-              {/* Verified Directory Listings (Grounding Source of Truth) */}
               {planResult.matchedCommunities && planResult.matchedCommunities.length > 0 && (
                 <div className="p-5 rounded-xl border border-[#8b5b30]/25 bg-[#faf6f0]/70">
                   <div className="flex items-center justify-between mb-3">
@@ -539,8 +515,6 @@ export default function CommunityMatchmaker() {
                   </div>
                 </div>
               )}
-
-              {/* Safety & Verification Reminder */}
               <div className="p-4 rounded-lg bg-[#8b5b30]/10 border border-[#8b5b30]/20 text-xs sm:text-sm text-[#402e32] flex items-start gap-2.5">
                 <IoAlertCircleOutline className="text-base shrink-0 mt-0.5 text-[#8b5b30]" />
                 <p>
@@ -550,10 +524,9 @@ export default function CommunityMatchmaker() {
                 </p>
               </div>
 
-              {/* Reset / Try Another Button */}
               <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-[#8b5b30]/15">
                 <span className="text-xs text-[#8b5b30]/80">
-                  Powered by open-weight AI (Llama 3.1 8B Instruct via Hugging Face Inference Providers).
+                  Powered by OpenAI.
                 </span>
                 <button
                   type="button"

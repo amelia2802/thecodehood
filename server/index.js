@@ -29,10 +29,9 @@ app.use(
 
 app.use(express.json({ limit: '10kb' }));
 
-// Open-weight model and endpoint details
-const HF_ROUTER_URL = 'https://router.huggingface.co/v1/chat/completions';
-const DEFAULT_MODEL = 'meta-llama/Llama-3.1-8B-Instruct';
-const ACTIVE_MODEL = process.env.HF_MODEL || DEFAULT_MODEL;
+const OPENAI_CHAT_COMPLETIONS_URL = 'https://api.openai.com/v1/chat/completions';
+const DEFAULT_MODEL = 'gpt-4o-mini';
+const ACTIVE_MODEL = process.env.OPENAI_MODEL || DEFAULT_MODEL;
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
@@ -40,8 +39,8 @@ app.get('/api/health', (req, res) => {
     status: 'ok',
     service: 'TheCodeHood Community Matchmaker API',
     model: ACTIVE_MODEL,
-    provider: 'Hugging Face Inference Providers (router.huggingface.co)',
-    hasHfToken: Boolean(process.env.HF_TOKEN),
+    provider: 'OpenAI API (api.openai.com)',
+    hasOpenAiKey: Boolean(process.env.OPENAI_API_KEY),
   });
 });
 
@@ -196,13 +195,13 @@ app.post('/api/matchmaker', async (req, res) => {
       });
     }
 
-    // Check Hugging Face token
-    const token = process.env.HF_TOKEN;
+    // Check OpenAI API key
+    const token = process.env.OPENAI_API_KEY;
     if (!token) {
       return res.status(503).json({
         error:
-          'Hugging Face Inference token (HF_TOKEN) is not configured on the server. Please set HF_TOKEN in your environment or .env file.',
-        hint: 'You can create a free User Access Token at https://huggingface.co/settings/tokens',
+          'OpenAI API key (OPENAI_API_KEY) is not configured on the server. Please set OPENAI_API_KEY in your environment or .env file.',
+        hint: 'Create an API key in your OpenAI dashboard.',
       });
     }
 
@@ -255,13 +254,13 @@ ${directoryContext}
 
 Generate the community plan as strictly valid JSON according to the schema.`;
 
-    // Call Hugging Face OpenAI-compatible chat router
+    // Call OpenAI's Chat Completions API
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 30000);
 
-    let hfResponse;
+    let openAiResponse;
     try {
-      hfResponse = await fetch(HF_ROUTER_URL, {
+      openAiResponse = await fetch(OPENAI_CHAT_COMPLETIONS_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -274,7 +273,7 @@ Generate the community plan as strictly valid JSON according to the schema.`;
             { role: 'user', content: userPrompt },
           ],
           temperature: 0.6,
-          max_tokens: 900,
+          max_completion_tokens: 900,
         }),
         signal: controller.signal,
       });
@@ -286,37 +285,53 @@ Generate the community plan as strictly valid JSON according to the schema.`;
         });
       }
       return res.status(502).json({
-        error: 'Network connection to the AI provider failed. Please check your internet connection and try again.',
+        error: 'Network connection to OpenAI failed. Please try again shortly.',
       });
     }
     clearTimeout(timeoutId);
 
-    if (!hfResponse.ok) {
-      const errorText = await hfResponse.text().catch(() => '');
-      console.error(`[HF Router Error] HTTP ${hfResponse.status}:`, errorText.slice(0, 300));
+    if (!openAiResponse.ok) {
+      const errorText = await openAiResponse.text().catch(() => '');
+      console.error(`[OpenAI API Error] HTTP ${openAiResponse.status}:`, errorText.slice(0, 300));
+      let providerError;
+      try {
+        providerError = JSON.parse(errorText)?.error;
+      } catch {
+        providerError = null;
+      }
 
-      if (hfResponse.status === 401) {
+      if (openAiResponse.status === 401) {
         return res.status(401).json({
-          error: 'Hugging Face authentication failed. Please verify that your HF_TOKEN is valid.',
+          error: 'OpenAI authentication failed. Please verify that your OPENAI_API_KEY is valid.',
         });
       }
-      if (hfResponse.status === 429) {
+      if (
+        openAiResponse.status === 402 ||
+        (openAiResponse.status === 429 &&
+          (providerError?.code === 'insufficient_quota' ||
+            providerError?.type === 'insufficient_quota'))
+      ) {
+        return res.status(402).json({
+          error: 'OpenAI API usage quota or billing limit reached. Check your API billing and usage limits, then try again.',
+        });
+      }
+      if (openAiResponse.status === 429) {
         return res.status(429).json({
-          error: 'Hugging Face API rate limit reached. Please wait a moment and try again.',
+          error: 'OpenAI API rate limit reached. Please wait a moment and try again.',
         });
       }
-      if (hfResponse.status === 503) {
+      if (openAiResponse.status === 503) {
         return res.status(503).json({
-          error: 'The AI model is currently loading or warming up. Please try again in 30 seconds.',
+          error: 'The OpenAI service is currently unavailable. Please try again shortly.',
         });
       }
 
       return res.status(502).json({
-        error: `AI provider error (HTTP ${hfResponse.status}). Please try again shortly.`,
+        error: `OpenAI API error (HTTP ${openAiResponse.status}). Please try again shortly.`,
       });
     }
 
-    const data = await hfResponse.json();
+    const data = await openAiResponse.json();
     const modelMessage = data?.choices?.[0]?.message?.content;
 
     let parsedPlan;

@@ -5,6 +5,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { IoLocationOutline, IoGlobeOutline } from "react-icons/io5";
+import { getCommunityCoverImage } from './communityCoverImages';
 
 export default function DisplayCard({ data, onSelectTech }) {
     if (!data) return null;
@@ -65,7 +66,7 @@ export default function DisplayCard({ data, onSelectTech }) {
                 <div className="relative">
                     <CardMedia
                         sx={{ height: { xs: 110, sm: 160 } }}
-                        image={data.img || "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1170&auto=format&fit=crop"}
+                        image={getCommunityCoverImage(data)}
                         title={typeof data.name === 'string' ? data.name : "Community image"}
                     />
                     <div className="absolute top-2 right-2 flex gap-1.5">

@@ -15,7 +15,8 @@ const AVAILABLE_TECH_TAGS = [
     'Python',
     'AI/ML',
     'open source',
-    'career development'
+    'career development',
+    'Women in Tech',
 ];
 
 export default function Form({ onSubmitSuccess, onClose }) {
@@ -199,44 +200,6 @@ export default function Form({ onSubmitSuccess, onClose }) {
 
     return (
         <form onSubmit={handleSubmit} noValidate className="flex flex-col items-center gap-4 w-full">
-            {/* Hidden native file input */}
-            <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                onChange={handleFileChange}
-                className="hidden"
-                aria-label="Upload Community Image"
-            />
-
-            <button
-                type="button"
-                onClick={handleUploadClick}
-                className="flex items-center gap-2 text-[#e3ddd7] bg-[#8b5b30] hover:bg-[#5A321A] px-3 py-2 rounded-lg text-base cursor-pointer transition-colors"
-            >
-                <FaUpload /> Upload Image
-            </button>
-
-            {imagePreview && (
-                <div className="flex items-center gap-3 p-2 bg-[#faf6f0] border border-[#8b5b30]/30 rounded-lg w-full">
-                    <img
-                        src={imagePreview}
-                        alt="Community upload preview"
-                        className="w-12 h-12 rounded object-cover border border-[#8b5b30]/30"
-                    />
-                    <div className="flex-1 text-xs truncate">
-                        <p className="font-semibold text-[#5A321A] truncate">{imageFileName}</p>
-                        <p className="text-stone-500">Image attached</p>
-                    </div>
-                    <button
-                        type="button"
-                        onClick={handleRemoveImage}
-                        className="text-xs text-red-700 hover:text-red-900 font-semibold px-2 py-1 rounded cursor-pointer"
-                    >
-                        Remove
-                    </button>
-                </div>
-            )}
 
             {Object.keys(errors).length > 0 && (
                 <Alert severity="error" className="w-full text-left" role="alert">
@@ -260,7 +223,7 @@ export default function Form({ onSubmitSuccess, onClose }) {
             </FormControl>
 
             {/* Country */}
-            <FormControl fullWidth>
+            <FormControl fullWidth required error={!!errors.country}>
                 <InputLabel htmlFor="community-country">Country</InputLabel>
                 <Input
                     id="community-country"
@@ -269,11 +232,11 @@ export default function Form({ onSubmitSuccess, onClose }) {
                     onChange={handleChange}
                     aria-describedby="country-helper"
                 />
-                <FormHelperText id="country-helper">Optional</FormHelperText>
+                <FormHelperText id="country-helper">{errors.country || "Enter the community country (Required)"}</FormHelperText>
             </FormControl>
 
             {/* City */}
-            <FormControl fullWidth>
+            <FormControl fullWidth required error={!!errors.city}>
                 <InputLabel htmlFor="community-city">City</InputLabel>
                 <Input
                     id="community-city"
@@ -282,7 +245,7 @@ export default function Form({ onSubmitSuccess, onClose }) {
                     onChange={handleChange}
                     aria-describedby="city-helper"
                 />
-                <FormHelperText id="city-helper">Optional</FormHelperText>
+                <FormHelperText id="city-helper">{errors.city || "Enter the community city (Required)"}</FormHelperText>
             </FormControl>
 
             {/* State */}
@@ -393,7 +356,7 @@ export default function Form({ onSubmitSuccess, onClose }) {
                     aria-describedby="url-helper"
                 />
                 <FormHelperText id="url-helper">
-                    {errors.website_url || "Website or joining URL starting with http:// or https:// (Required)"}
+                    {errors.website_url || "Website or joining URL starting with https:// (Required)"}
                 </FormHelperText>
             </FormControl>
 
