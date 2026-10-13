@@ -1,5 +1,4 @@
 import { useState, useRef } from 'react';
-import { FaUpload } from "react-icons/fa";
 import { FormControl, FormHelperText, Input, InputLabel } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
@@ -35,8 +34,6 @@ export default function Form({ onSubmitSuccess, onClose }) {
     });
 
     const fileInputRef = useRef(null);
-    const [imagePreview, setImagePreview] = useState(null);
-    const [imageFileName, setImageFileName] = useState('');
     const [errors, setErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submittedData, setSubmittedData] = useState(null);
@@ -105,39 +102,6 @@ export default function Form({ onSubmitSuccess, onClose }) {
         }
     };
 
-    const handleUploadClick = () => {
-        fileInputRef.current?.click();
-    };
-
-    const handleFileChange = (e) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            setImageFileName(file.name);
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                const base64Url = reader.result;
-                setImagePreview(base64Url);
-                setFormData((prev) => ({
-                    ...prev,
-                    img: base64Url
-                }));
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-
-    const handleRemoveImage = () => {
-        setImagePreview(null);
-        setImageFileName('');
-        setFormData((prev) => ({
-            ...prev,
-            img: ''
-        }));
-        if (fileInputRef.current) {
-            fileInputRef.current.value = '';
-        }
-    };
-
     const handleReset = () => {
         setFormData({
             name: '',
@@ -152,8 +116,6 @@ export default function Form({ onSubmitSuccess, onClose }) {
             img: '',
             technologies: []
         });
-        setImagePreview(null);
-        setImageFileName('');
         if (fileInputRef.current) {
             fileInputRef.current.value = '';
         }
