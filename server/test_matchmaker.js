@@ -1,7 +1,12 @@
 process.env.NODE_ENV = 'test';
-import assert from 'assert';
-import app from './index.js';
+import assert from 'node:assert';
 import http from 'http';
+
+const originalConfiguredModel = process.env.OPENAI_MODEL;
+process.env.OPENAI_MODEL = 'test-model-id';
+const { default: app } = await import('./index.js');
+if (originalConfiguredModel === undefined) delete process.env.OPENAI_MODEL;
+else process.env.OPENAI_MODEL = originalConfiguredModel;
 
 console.log('=== THECODEHOOD COMMUNITY MATCHMAKER API TEST SUITE ===');
 
@@ -46,8 +51,9 @@ async function runTests() {
     assert.strictEqual(health.status, 200, 'Health endpoint should return 200');
     assert.strictEqual(health.body.status, 'ok', 'Status should be ok');
     assert.ok(health.body.model, 'Model identifier should be present');
-    assert.strictEqual(health.body.provider.includes('Hugging Face'), true, 'Provider should reference Hugging Face');
-    console.log('✓ Passed: Test 1: Health endpoint returns 200 and Hugging Face provider attribution');
+    assert.strictEqual(health.body.provider.includes('OpenAI API'), true, 'Provider should reference OpenAI');
+    assert.strictEqual(typeof health.body.hasOpenAiKey, 'boolean', 'OpenAI key configuration status should be present');
+    console.log('✓ Passed: Test 1: Health endpoint returns 200 and OpenAI provider attribution');
     passedCount++;
 
     // Test 2: Input validation - Missing all fields
@@ -144,10 +150,10 @@ async function runTests() {
     console.log('✓ Passed: Test 5: Plan returns recommendation, steps, offline challenge, checklist, verification reminder, and matched directory listings');
     passedCount++;
 
-    // Test 6: Missing HF_TOKEN handled gracefully in live mode
+    // Test 6: Missing OpenAI API key handled gracefully in live mode
     totalCount++;
-    const originalToken = process.env.HF_TOKEN;
-    delete process.env.HF_TOKEN;
+    const originalOpenAiToken = process.env.OPENAI_API_KEY;
+    delete process.env.OPENAI_API_KEY;
 
     const noTokenRes = await request(
       {
@@ -164,10 +170,110 @@ async function runTests() {
         socialComfort: "I'm ready to network",
       }
     );
-    assert.strictEqual(noTokenRes.status, 503, 'Should return 503 when HF_TOKEN is missing');
+    assert.strictEqual(noTokenRes.status, 503, 'Should return 503 when OPENAI_API_KEY is missing');
     assert.strictEqual(typeof noTokenRes.body.error, 'string', 'Should return clear user-friendly error string');
-    if (originalToken) process.env.HF_TOKEN = originalToken;
-    console.log('✓ Passed: Test 6: Missing HF_TOKEN returns graceful 503 with helpful configuration guidance without crash');
+    assert.ok(noTokenRes.body.error.includes('OPENAI_API_KEY'), 'Missing key error should name the required setting');
+    if (originalOpenAiToken === undefined) delete process.env.OPENAI_API_KEY;
+    else process.env.OPENAI_API_KEY = originalOpenAiToken;
+    console.log('✓ Passed: Test 6: Missing OPENAI_API_KEY returns graceful 503 with helpful configuration guidance without crash');
+    passedCount++;
+
+    // Test 7: Live request uses the OpenAI Chat Completions contract
+    totalCount++;
+    const originalFetch = globalThis.fetch;
+    process.env.OPENAI_API_KEY = 'test-openai-api-key';
+    let capturedRequest;
+    globalThis.fetch = async (url, options) => {
+      capturedRequest = { url, options, body: JSON.parse(options.body) };
+      return {
+        ok: true,
+        status: 200,
+        json: async () => ({
+          choices: [{
+            message: {
+              content: JSON.stringify({
+                recommendation: 'Try a welcoming local group.',
+                steps: ['Find a group.', 'Check its next meeting.'],
+                offlineChallenge: 'Attend one event.',
+                prepChecklist: ['Check the event details.'],
+                verificationReminder: 'Verify details with the organizer.',
+              }),
+            },
+          }],
+        }),
+      };
+    };
+
+    try {
+      const generatedPlan = await request(
+        {
+          hostname: 'localhost',
+          port: PORT,
+          path: '/api/matchmaker',
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+        },
+        {
+          interest: 'AI',
+          location: 'Austin, TX',
+          preferredMeetup: 'in_person',
+          socialComfort: "I'm ready to network",
+        }
+      );
+      assert.strictEqual(generatedPlan.status, 200, 'Successful OpenAI response should return 200');
+      assert.ok(generatedPlan.body.plan.recommendation, 'Generated plan should be returned');
+      assert.strictEqual(capturedRequest.url, 'https://api.openai.com/v1/chat/completions');
+      assert.strictEqual(capturedRequest.options.headers.Authorization, 'Bearer test-openai-api-key');
+      assert.strictEqual(capturedRequest.body.model, 'test-model-id');
+      assert.strictEqual(capturedRequest.body.max_completion_tokens, 900);
+      assert.strictEqual('max_tokens' in capturedRequest.body, false, 'Deprecated max_tokens should not be sent');
+    } finally {
+      globalThis.fetch = originalFetch;
+      if (originalOpenAiToken === undefined) delete process.env.OPENAI_API_KEY;
+      else process.env.OPENAI_API_KEY = originalOpenAiToken;
+    }
+    console.log('✓ Passed: Test 7: Plan generation uses OpenAI endpoint, key, model, and token limit');
+    passedCount++;
+
+    // Test 8: OpenAI quota errors are surfaced as actionable billing responses
+    totalCount++;
+    process.env.OPENAI_API_KEY = 'test-openai-api-key';
+    globalThis.fetch = async () => ({
+      ok: false,
+      status: 429,
+      text: async () => JSON.stringify({
+        error: {
+          message: 'You exceeded your current quota.',
+          type: 'insufficient_quota',
+          code: 'insufficient_quota',
+        },
+      }),
+    });
+
+    try {
+      const paymentError = await request(
+        {
+          hostname: 'localhost',
+          port: PORT,
+          path: '/api/matchmaker',
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+        },
+        {
+          interest: 'AI',
+          location: 'Austin, TX',
+          preferredMeetup: 'in_person',
+          socialComfort: "I'm ready to network",
+        }
+      );
+      assert.strictEqual(paymentError.status, 402, 'Provider payment errors should return 402');
+      assert.ok(paymentError.body.error.includes('billing and usage limits'), 'Quota error should explain the likely cause');
+    } finally {
+      globalThis.fetch = originalFetch;
+      if (originalOpenAiToken === undefined) delete process.env.OPENAI_API_KEY;
+      else process.env.OPENAI_API_KEY = originalOpenAiToken;
+    }
+    console.log('✓ Passed: Test 8: OpenAI insufficient-quota response explains the billing/usage issue');
     passedCount++;
 
     console.log(`\n=== RESULTS: ${passedCount}/${totalCount} TESTS PASSED ===\n`);

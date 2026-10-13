@@ -36,33 +36,30 @@ As part of the **Hacktoberfest Open-Source AI Challenge (Week 1: Touch Grass)**,
 │   - CORS restricted to FRONTEND_ORIGIN       │
 │   - Input sanitization & bounds checking     │
 │   - Grounding against verified communities   │
-│   - Server-side HF_TOKEN credential handling │
+│   - Server-side OpenAI key handling          │
 └──────────────────────┬───────────────────────┘
                        │ OpenAI-Compatible Chat Completions
 ┌──────────────────────▼───────────────────────┐
-│   Hugging Face Inference Providers           │
-│   https://router.huggingface.co/v1           │
-│   Model: meta-llama/Llama-3.1-8B-Instruct    │
+│   OpenAI API                                 │
+│   https://api.openai.com/v1                 │
+│   Model: gpt-4o-mini (configurable)          │
 └──────────────────────────────────────────────┘
 ```
 
 ---
 
-## 🤖 Open-Source AI Model & Provider Attribution
+## 🤖 AI Model & Provider Attribution
 
-- **Endpoint**: Official OpenAI-compatible router endpoint:  
-  `https://router.huggingface.co/v1/chat/completions`
-- **Default Model**: [`meta-llama/Llama-3.1-8B-Instruct`](https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct)
-  - **License**: Llama 3.1 Community License Agreement (open weights, commercial & research use permitted).
-- **Alternative Supported Model**: [`Qwen/Qwen2.5-72B-Instruct`](https://huggingface.co/Qwen/Qwen2.5-72B-Instruct)
-  - **License**: Apache 2.0 (permissive open source).
-- **Attribution**: Powered by Hugging Face Inference Providers. AI outputs are framed transparently as advisory guidance and planning advice rather than verified live tickets.
+- **Endpoint**: OpenAI Chat Completions API:  
+  `https://api.openai.com/v1/chat/completions`
+- **Default Model**: `gpt-4o-mini`. Set `OPENAI_MODEL` to another model ID available to your OpenAI API account.
+- **Attribution**: Powered by OpenAI. AI outputs are advisory planning guidance, not verified live event tickets.
 
 ---
 
 ## 🔒 Security & Privacy
 
-1. **Server-Side Token Storage**: `HF_TOKEN` is loaded strictly in the backend via server environment variables. It is **never** prefixed with `VITE_`, never exposed in React code, never bundled into static build artifacts, and never leaked in API responses.
+1. **Server-Side Token Storage**: `OPENAI_API_KEY` is loaded strictly in the backend via server environment variables. It is **never** prefixed with `VITE_`, never exposed in React code, never bundled into static build artifacts, and never leaked in API responses.
 2. **Input Validation**: All client fields (`interest`, `location`, `preferredMeetup`, `socialComfort`) are sanitized, strictly length-limited, and validated before dispatch.
 3. **Graceful Degradation**: Handles missing credentials, rate limits (HTTP 429), cold starts (HTTP 503), timeouts, and network disconnects gracefully with clear user guidance.
 4. **Minimal Data Surface**: Only generic interest, city/region, and comfort preferences are passed to the model—no names, emails, IP addresses, or tracking identifiers.
@@ -83,15 +80,15 @@ npm install
 ```
 
 ### 3. Server Configuration
-Create a `.env` file in the root directory (or server environment) with your Hugging Face User Access Token:
+Create an API key in your OpenAI dashboard, then add it to a `.env` file in the root directory (or to your server environment):
 ```env
 # Server-side only (Do NOT prefix with VITE_)
-HF_TOKEN=hf_your_hugging_face_user_access_token_here
-HF_MODEL=meta-llama/Llama-3.1-8B-Instruct
+OPENAI_API_KEY=your_openai_api_key
+OPENAI_MODEL=gpt-4o-mini
 PORT=3001
 FRONTEND_ORIGIN=http://localhost:5173
 ```
-*(Get a free token from [https://huggingface.co/settings/tokens](https://huggingface.co/settings/tokens).)*
+See [OpenAI's GPT-4o mini documentation](https://developers.openai.com/api/docs/models/gpt-4o-mini) for model details and pricing. API usage is billed by token; check current pricing and configure usage limits in your OpenAI account.
 
 ### 4. Running Locally
 Run the backend server:
@@ -134,9 +131,9 @@ npm run build
    - **Build Command**: `npm install`
    - **Start Command**: `npm run server`
 4. Add the following **Environment Variables**:
-   - `HF_TOKEN`: Your Hugging Face user access token (`hf_...`)
+   - `OPENAI_API_KEY`: Your OpenAI API key
    - `FRONTEND_ORIGIN`: Your deployed frontend URL (e.g. `https://thecodehood.onrender.com`)
-   - `HF_MODEL`: `meta-llama/Llama-3.1-8B-Instruct` (optional, defaults to this model)
+   - `OPENAI_MODEL`: `gpt-4o-mini` or another model ID available to your account (optional)
    - *Note: Render automatically injects the `PORT` variable.*
 5. Click **Create Web Service** and note your deployed service URL (e.g. `https://thecodehood-api.onrender.com`).
 
@@ -156,7 +153,7 @@ npm run build
 
 ## ⚠️ Remaining Limitations
 
-1. **Cold Start Latency**: Free inference tiers on Hugging Face router endpoints may experience brief cold start latency on first request.
+1. **API Availability and Cost**: OpenAI API usage is subject to account billing, usage limits, model availability, and rate limits. The API is separate from a ChatGPT subscription.
 2. **Directory Listings**: Verified listings currently map to verified seed records in `src/data.js`. Future iterations will add automated ingestion of community feeds via RSS/ICS and webhooks.
 3. **Safety Verification**: AI guidance provides planning steps and icebreaker suggestions; participants must always verify physical event details, venue safety policies, and codes of conduct directly with organizers before traveling.
 
