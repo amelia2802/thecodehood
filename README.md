@@ -20,6 +20,9 @@ As part of the **Hacktoberfest Open-Source AI Challenge (Week 1: Touch Grass)**,
 
 ---
 
+<img width="1901" height="912" alt="theCodehood" src="https://github.com/user-attachments/assets/ce523644-6872-4680-beb2-9460118a5879" />
+
+
 ## 🏗️ Architecture
 
 ```
