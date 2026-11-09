@@ -23,7 +23,7 @@ export default function Header({
     };
 
     return (
-        <header className="sticky top-0 z-10 px-4 py-3.5 text-lg backdrop-blur-sm md:px-8">
+        <header className="sticky top-0 z-10 text-lg backdrop-blur-sm md:px-8">
             <div className="flex items-center justify-between gap-3">
                 <button
                     type="button"
