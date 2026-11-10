@@ -6,6 +6,43 @@ Repository: [https://github.com/amelia2802/thecodehood](https://github.com/ameli
 
 ---
 
+## 🤖 Built with Entire
+
+TheCodeHood was developed using [Entire](https://entire.dev) as the AI agent runtime — a context-recording layer that tracks every agent session, links them to Git commits, and produces a full audit trail of how the codebase evolved.
+
+### How Entire is configured in this project
+
+| Setting | Value | Purpose |
+|---|---|---|
+| `enabled` | `true` | Entire is active for all agent sessions |
+| `telemetry` | `true` | Anonymous session telemetry enabled |
+| `checkpoints.primary.type` | `git-refs` | Every Git ref (commit/tag) is a checkpoint |
+| `commit_linking` | `always` | Every commit is linked to the agent session that produced it |
+
+### What this means in practice
+
+- **Session recordings** live in `.entire/metadata/<session-id>/full.jsonl` — a complete, structured log of every prompt, tool call, and model response from each agent coding session.
+- **Commit linking** (`"always"`) means you can trace any line of code back to the exact agent session and user prompt that created it.
+- **Git-refs checkpoints** let Entire restore or diff project state at any tagged commit — useful for reviewing what changed between labs.
+- **The `.entire/` directory is Git-tracked** (excluding `.entire/logs/` and `.entire/tmp/` via `.entire/.gitignore`) so session history travels with the repo.
+
+### Files
+
+```
+.entire/
+├── settings.json          # Main Entire config (enabled, telemetry, checkpoints)
+├── settings.local.json    # Local override: commit_linking = "always"
+├── metadata/              # Agent session recordings (JSONL transcripts)
+│   ├── <session-id>/
+│   │   ├── full.jsonl     # Complete session transcript
+│   │   └── prompt.txt     # Initial prompt for the session (if stored)
+├── logs/
+│   └── entire.log         # Runtime agent logs (gitignored)
+└── tmp/                   # Temporary working files (gitignored)
+```
+
+---
+
 ## 🌿 Hacktoberfest Challenge: Week 1 — Touch Grass
 
 ### TheCodeHood Community Matchmaker

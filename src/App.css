@@ -10,5 +10,17 @@ html,body{
 }
 
 h1,h2,h3,h4,h5,h6{
-    color:#5A321A;
+    color:#402e32;
+}
+
+.bento-grid{
+    @apply bg-gray-800 rounded-2xl shadow-lg/30 flex items-center justify-center text-gray-400 text-2xl font-semibold;
+}
+
+.bento-img{
+    @apply w-full h-full rounded-2xl object-cover;
+}
+
+.card-contact{
+    @apply flex items-center gap-1 text-[#8b5b30] font-semibold hover:text-[#402e32] hover:underline;
 }
