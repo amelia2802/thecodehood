@@ -1,6 +1,6 @@
 export default function BentoGrid(){
     return(
-        <div className="grid grid-cols-4 grid-rows-4 gap-2 w-full min-h-[400px] md:w-2/3 md:max-h-[600px]">
+        <div className="grid grid-cols-4 grid-rows-3 gap-2 w-full min-h-[400px] md:w-2/3 md:max-h-[600px]">
             <div className="bento-grid col-span-2">
                 <img className="bento-img" src="https://images.pexels.com/photos/8344694/pexels-photo-8344694.jpeg" alt="cafe" />
             </div>

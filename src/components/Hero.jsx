@@ -11,7 +11,7 @@ export default function Hero(){
                 <section className="flex flex-col gap-4 mt-40 items-center">
                     <div className="flex items-center gap-2 text-4xl font-bold">
                         <GiTechnoHeart className="text-[#402e32]"/>
-                        <h1>theCodehood<span className="text-[#8b5b30]">.</span></h1>
+                        <h2>theCodehood<span className="text-[#8b5b30]">.</span></h2>
                     </div>
                     <p className="text-lg">Find your people, beyond the pixels</p>
                     <div className="flex justify-center gap-6 items-center">

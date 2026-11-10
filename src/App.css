@@ -20,3 +20,7 @@ h1,h2,h3,h4,h5,h6{
 .bento-img{
     @apply w-full h-full rounded-2xl object-cover;
 }
+
+.card-contact{
+    @apply flex items-center gap-1 text-[#8b5b30] font-semibold hover:text-[#402e32] hover:underline;
+}
