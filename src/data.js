@@ -9,7 +9,7 @@ export const data = [
         city: "Boston",
         state: "MA",
         postal_code: "02210",
-        description: "an AI-powered global talent platform and digital community acquired by Randstad Digital to connect pre-vetted software engineers and tech specialists directly with Fortune 500 and enterprise hiring companies.",
+        description: "An AI-powered global talent platform and digital community acquired by Randstad Digital to connect pre-vetted software engineers and tech specialists directly with Fortune 500 and enterprise hiring companies.",
         technologies: ["Skill-Based Matching", "Digital & Product Engineering", "Career Development", "AI/ML", "Cloud & Infrastructure"],
         format: "hybrid",
         is_global: true,
