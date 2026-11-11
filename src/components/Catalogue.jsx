@@ -1,8 +1,6 @@
 import { data } from "../data";
 import Search from "../utilities/Search";
 import DisplayCard from "../utilities/DisplayCard";
-import SubmitForm from "../utilities/SubmitForm";
-import { IoSearchOutline, IoCloseCircleOutline, IoAlertCircleOutline, IoInformationCircleOutline } from "react-icons/io5";
 
 export default function Catalouge(){
     return(
@@ -19,7 +17,10 @@ export default function Catalouge(){
                             key={community.id} 
                             img={community.img} 
                             title={community.name} 
-                            location={community.city} 
+                            city={community.city} 
+                            state={community.state}
+                            country={community.country}
+                            format={community.format}
                             details={community.description} 
                             url={community.website_url} 
                             contact={community.contact} 

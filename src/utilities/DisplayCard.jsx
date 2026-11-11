@@ -8,19 +8,20 @@ import Typography from '@mui/material/Typography';
 import { IoLocationOutline, IoGlobeOutline,IoAtCircleOutline } from "react-icons/io5";
 
 
-export default function DisplayCard({img,title,location,details,url,contact}){
+export default function DisplayCard({img,title,city,state,country,format,details,url,contact}){
     const card =(
         <React.Fragment>
             <CardMedia 
                 sx={{height:200}}
                 image={img}
             />
+            <Typography sx={{position:'relative',width:'max-content',fontSize:'0.8rem',top:'-12rem',left:'25rem', textAlign:'center',color:'#fff',backgroundColor:'#8b5b30',padding:'.1rem .5rem',borderRadius:'1rem'}}>{format}</Typography>
             <CardContent sx={{display:'flex',flexDirection:'column',gap:'6px'}}>
                 <Typography gutterBottom variant="h4" component="h4" sx={{fontSize:'1.5rem', textAlign:'center'}}>
                     {title}
                 </Typography>
                 <Typography variant="body2" sx={{ color: 'text.secondary', display: 'flex', alignItems: 'center',gap:'5px',jusifyContent:'flex-start' }}>
-                    <IoLocationOutline /> {location}
+                    <IoLocationOutline /> {city ? `${city}, ` : ''}{state ? `${state}, ` : ''}{country && ` ${country}`}
                 </Typography>
                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                     {details}
