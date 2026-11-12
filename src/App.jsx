@@ -2,7 +2,7 @@ import Header from './components/Header';
 import Hero from './components/Hero';
 //import CommunityMatchmaker from './components/CommunityMatchmaker';
 import Catalogue from './components/Catalogue';
-//import Footer from './components/Footer';
+import Footer from './components/Footer';
 
 
 import './App.css';
@@ -13,6 +13,7 @@ function App(){
       <Header />
       <Hero />
       <Catalogue />
+      <Footer />
     </div>
   );
 }
