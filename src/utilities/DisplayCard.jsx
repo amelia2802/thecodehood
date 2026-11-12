@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -11,26 +12,28 @@ import { IoLocationOutline, IoGlobeOutline,IoAtCircleOutline } from "react-icons
 export default function DisplayCard({img,title,city,state,country,format,details,url,contact}){
     const card =(
         <React.Fragment>
-            <CardMedia 
-                sx={{height:200}}
-                image={img}
-            />
-            <Typography sx={{position:'relative',width:'max-content',fontSize:'0.8rem',top:'-12rem',left:'25rem', textAlign:'center',color:'#fff',backgroundColor:'#8b5b30',padding:'.1rem .5rem',borderRadius:'1rem'}}>{format}</Typography>
-            <CardContent sx={{display:'flex',flexDirection:'column',gap:'6px'}}>
-                <Typography gutterBottom variant="h4" component="h4" sx={{fontSize:'1.5rem', textAlign:'center'}}>
-                    {title}
-                </Typography>
-                <Typography variant="body2" sx={{ color: 'text.secondary', display: 'flex', alignItems: 'center',gap:'5px',jusifyContent:'flex-start' }}>
-                    <IoLocationOutline /> {city ? `${city}, ` : ''}{state ? `${state}, ` : ''}{country && ` ${country}`}
-                </Typography>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                    {details}
-                </Typography>
-            </CardContent>
-            <CardActions sx={{display:'flex',justifyContent:'space-between'}}>
-                <Button size="small"><a href={url} target="_blank" rel="noopener noreferrer" className="card-contact"><IoGlobeOutline /> Join</a></Button>
-                <Button size="small"><a href={contact} target="_blank" rel="noopener noreferrer" className="card-contact"><IoAtCircleOutline /> Contact</a></Button>
-            </CardActions>
+            <Box sx={{position:'relative'}}>
+                <CardMedia 
+                    sx={{height:200}}
+                    image={img}
+                />
+                <Typography sx={{position:'absolute',width:'max-content',fontSize:'0.8rem',textTransform:'uppercase',top:12,right:12, textAlign:'center',color:'#fff',backgroundColor:'#8b5b30',padding:'.1rem .5rem',borderRadius:'1rem'}}>{format}</Typography>
+                <CardContent sx={{display:'flex',flexDirection:'column',gap:'6px'}}>
+                    <Typography gutterBottom variant="h4" component="h4" sx={{fontSize:'1.5rem', textAlign:'center'}}>
+                        {title}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: 'text.secondary', display: 'flex', alignItems: 'center',gap:'5px',jusifyContent:'flex-start' }}>
+                        <IoLocationOutline /> {city ? `${city}, ` : ''}{state ? `${state}, ` : ''}{country && ` ${country}`}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                        {details}
+                    </Typography>
+                </CardContent>
+                <CardActions sx={{display:'flex',justifyContent:'space-between'}}>
+                    <Button size="small"><a href={url} target="_blank" rel="noopener noreferrer" className="card-contact"><IoGlobeOutline /> Join</a></Button>
+                    <Button size="small"><a href={contact} target="_blank" rel="noopener noreferrer" className="card-contact"><IoAtCircleOutline /> Contact</a></Button>
+                </CardActions>
+            </Box>
         </React.Fragment>
     );
     return(
