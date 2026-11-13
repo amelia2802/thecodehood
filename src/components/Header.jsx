@@ -5,22 +5,8 @@ import Search from "../utilities/Search.jsx";
 import Explore from "../utilities/Explore.jsx";
 import SubmitForm from "../utilities/SubmitForm.jsx";
 
-export default function Header({
-    onExploreClick,
-    searchQuery = "",
-    setSearchQuery,
-    onSearchSubmit,
-    onClearSearch,
-    onLocationClick,
-    isGeoLoading = false,
-    onSubmitSuccess
-}) {
+export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-    const handleMobileSearchSubmit = (value) => {
-        onSearchSubmit?.(value);
-        setIsMenuOpen(false);
-    };
 
     return (
         <header className="sticky top-0 z-10 text-lg backdrop-blur-sm md:px-8">
@@ -28,7 +14,6 @@ export default function Header({
                 <button
                     type="button"
                     className="flex shrink-0 cursor-pointer items-center gap-2"
-                    onClick={onExploreClick}
                     aria-label="Explore theCodehood communities"
                 >
                     <GiTechnoHeart className="text-2xl text-[#5A321A]" />
@@ -39,12 +24,6 @@ export default function Header({
 
                 <div className="hidden max-w-sm flex-1 md:block md:mx-4">
                     <Search
-                        value={searchQuery}
-                        onChange={setSearchQuery}
-                        onSubmit={onSearchSubmit}
-                        onClear={onClearSearch}
-                        onLocationClick={onLocationClick}
-                        isGeoLoading={isGeoLoading}
                         placeholder="Search city, state, zip..."
                         inputId="header-search-input"
                         className="w-full"
@@ -55,9 +34,8 @@ export default function Header({
                     <SubmitForm
                         buttonText="Submit Community"
                         buttonClassName="cursor-pointer rounded-lg border border-[#5A321A]/30 px-3 py-1.5 text-xs font-semibold text-[#5A321A] transition-colors hover:bg-[#8b5b30]/10 hover:text-[#402413] md:text-sm"
-                        onSubmitSuccess={onSubmitSuccess}
                     />
-                    <Explore onClick={onExploreClick} />
+                    <Explore />
                 </div>
 
                 <button
@@ -75,12 +53,6 @@ export default function Header({
             {isMenuOpen && (
                 <nav id="mobile-navigation" className="flex flex-col gap-3 border-t border-[#8b5b30]/15 py-4 md:hidden">
                     <Search
-                        value={searchQuery}
-                        onChange={setSearchQuery}
-                        onSubmit={handleMobileSearchSubmit}
-                        onClear={onClearSearch}
-                        onLocationClick={onLocationClick}
-                        isGeoLoading={isGeoLoading}
                         placeholder="Search city, state, zip..."
                         inputId="mobile-header-search-input"
                         className="w-full"
@@ -88,12 +60,10 @@ export default function Header({
                     <SubmitForm
                         buttonText="Submit Community"
                         buttonClassName="w-full cursor-pointer rounded-lg border border-[#5A321A]/30 px-3 py-2 text-sm font-semibold text-[#5A321A] transition-colors hover:bg-[#8b5b30]/10"
-                        onSubmitSuccess={onSubmitSuccess}
                     />
                     <Explore
                         onClick={() => {
                             setIsMenuOpen(false);
-                            onExploreClick?.();
                         }}
                     />
                 </nav>
