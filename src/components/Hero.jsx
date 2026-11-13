@@ -3,7 +3,7 @@ import BentoGrid from "../utilities/BentoGrid";
 import Explore from "../utilities/Explore";
 import SubmitForm from "../utilities/SubmitForm";
 
-export default function Hero(){
+export default function Hero({onClick}){
     return(
         <main className="w-full py-6">
             <div className="flex flex-col md:gap-8 md:flex-row">
@@ -15,7 +15,7 @@ export default function Hero(){
                     </div>
                     <p className="text-lg">Find your people, beyond the pixels</p>
                     <div className="flex justify-center gap-6 items-center">
-                        <Explore />
+                        <Explore goToExplore={onClick}/>
                         <SubmitForm />
                     </div>
                 </section>

@@ -5,7 +5,7 @@ import Search from "../utilities/Search.jsx";
 import Explore from "../utilities/Explore.jsx";
 import SubmitForm from "../utilities/SubmitForm.jsx";
 
-export default function Header() {
+export default function Header({ onClick }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     return (
@@ -35,7 +35,7 @@ export default function Header() {
                         buttonText="Submit Community"
                         buttonClassName="cursor-pointer rounded-lg border border-[#5A321A]/30 px-3 py-1.5 text-xs font-semibold text-[#5A321A] transition-colors hover:bg-[#8b5b30]/10 hover:text-[#402413] md:text-sm"
                     />
-                    <Explore />
+                    <Explore goToExplore={onClick}/>
                 </div>
 
                 <button
