@@ -1,86 +1,54 @@
-export function isValidUrl(url) {
-    if (!url || typeof url !== 'string') return false;
-    const trimmed = url.trim();
-    try {
-        const parsed = new URL(trimmed);
-        return parsed.protocol === 'http:' || parsed.protocol === 'https:';
-    } catch {
-        return false;
-    }
-}
+export function validateCommunitySubmission(data){
 
-export function isValidEmail(email) {
-    if (!email || typeof email !== 'string') return true;
-    const trimmed = email.trim();
-    if (trimmed.length === 0) return true;
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed);
-}
-
-export function validateCommunitySubmission(formData = {}) {
     const errors = {};
 
-    // 1. Community Name (required)
-    if (!formData.name || formData.name.trim().length === 0) {
-        errors.name = "Community name is required.";
-    } else if (formData.name.trim().length < 2) {
-        errors.name = "Community name must be at least 2 characters.";
+    if(!data.name.trim()){
+        errors.name = "Community name is required";
+    }
+    else if(data.name.trim().length < 3){
+        errors.name = "Name must be at least 3 characters";
     }
 
-    // 2. Description (required)
-    if (!formData.description || formData.description.trim().length === 0) {
-        errors.description = "Description is required.";
-    } else if (formData.description.trim().length < 10) {
-        errors.description = "Description must be at least 10 characters long.";
+    if(data.zip && !/^[A-Za-z0-9\s-]{3,10}$/.test(data.zip.trim())){
+        errors.zip="Enter a valid zip / postal code!";
     }
 
-    // 3. Format (required)
-    const validFormats = ['online', 'in_person', 'hybrid'];
-    if (!formData.format || !validFormats.includes(formData.format)) {
-        errors.format = "Please select a participation format (in-person, hybrid, or online).";
+    if(!data.country.trim()){
+        errors.country = "Country is required";
     }
 
-    // 4. Technologies (required, at least 1 tag)
-    if (!formData.technologies || !Array.isArray(formData.technologies) || formData.technologies.length === 0) {
-        errors.technologies = "Please select at least one technology or interest tag.";
+    if(!data.type){
+        errors.type = "Select a type of operation";
     }
 
-    // 5. Website URL (required and valid)
-    if (!formData.website_url || formData.website_url.trim().length === 0) {
-        errors.website_url = "Website or joining URL is required.";
-    } else if (!isValidUrl(formData.website_url)) {
-        errors.website_url = "Please enter a valid website URL starting with http:// or https://.";
+    if(data.isGlobal===""){
+        errors.isGlobal = "Please choose Yes or No";
     }
 
-    // 6. Contact Email (optional, but validate if provided)
-    if (formData.email && formData.email.trim().length > 0 && !isValidEmail(formData.email)) {
-        errors.email = "Please enter a valid email address.";
+    if (data.description.length > 500){
+        errors.description = "Keep it under 500 characters";
     }
 
-    return {
-        isValid: Object.keys(errors).length === 0,
-        errors
-    };
-}
+    if(!data.website.trim()){
+        errors.website = "Website is required";
+    }
+    else{
+        try{
+            const url = new URL(data.website.trim());
+            if(!["http:", "https:"].includes(url.protocol)) throw new Error();
+        }
+        catch{
+            errors.website = "Enter a valid URL, e.g. https://example.com"
+        }
+    }
 
-export function createPendingSubmission(formData) {
-    return {
-        name: formData.name.trim(),
-        description: formData.description.trim(),
-        desc: formData.description.trim(),
-        city: (formData.city || '').trim(),
-        state: (formData.state || '').trim(),
-        country: (formData.country || '').trim(),
-        postal_code: (formData.postal_code || formData.zip || '').trim(),
-        zip: (formData.postal_code || formData.zip || '').trim(),
-        technologies: [...(formData.technologies || [])],
-        format: formData.format,
-        type: formData.format,
-        website_url: formData.website_url.trim(),
-        url: formData.website_url.trim(),
-        email: (formData.email || '').trim(),
-        img: formData.img || '',
-        status: 'pending',
-        is_demo: false,
-        created_at: new Date().toISOString()
-    };
+    if(!data.contact.trim()){
+        errors.contact = "Contact is required";
+    }
+    else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.contact.trim())){
+        errors.contact = "Enter a valid email address";
+    }
+
+    return errors;
+    
 }
