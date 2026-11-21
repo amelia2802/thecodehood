@@ -37,43 +37,148 @@ export default function Form() {
         setErrors(validationErrors);
     }
 
+    const handleSubmit =  async(e)=>{
+        e.preventDefault();
+
+        const validationErrors = validateCommunitySubmission(values);
+
+        setErrors(validationErrors);
+
+        const allVisited = Object.keys(values).reduce((acc,key)=>{
+            acc[key] = true
+            return acc
+        },{});
+
+        setVisited(allVisited);
+
+        /*if(Object.keys(validationErrors).length>0){
+            return;
+        }
+
+        try{
+            await submitCommunity(values)
+
+            alert("Community submitted successfully!");
+
+            setValues(initialValues);
+            setErrors({});
+            setVisited({});
+
+        } 
+        catch (error) {
+            console.error("Submission failed:", error);
+            alert("Something went wrong. Please try again.");
+        }*/
+       if (Object.keys(validationErrors).length > 0) {
+        console.log("Validation failed:", validationErrors);
+        return;
+    }
+
+    // 5. Temporary testing (no backend yet)
+    console.log("Form submitted successfully:", values);
+
+    alert("Form validation successful!");
+    }
+
     return (
-        <form  noValidate className="flex flex-col mt-4 gap-4 w-full">
-            <FormControl>
+        <form  
+            noValidate
+            onSubmit={handleSubmit} 
+            className="flex flex-col mt-4 gap-4 w-full"
+        >
+            <FormControl error={visited.name && Boolean(errors.name)} >
                 <InputLabel>Fullname</InputLabel>
                 <Input 
                     id="name" 
+                    name="name"
                     value={values.name} 
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    error={visited.name && Boolean(errors.name)} 
                     aria-describedby="Your community name" 
                     fullWidth 
                     required
                 />
-                <FormHelperText id="name">Your community name</FormHelperText>
+                <FormHelperText id="name">
+                    {visited.name && errors.name
+                        ? errors.name
+                        : "Your community name"
+                    }
+                </FormHelperText>
             </FormControl>
-            <FormControl>
+            <FormControl error={visited.city && Boolean(errors.city)}>
                 <InputLabel>City</InputLabel>
-                <Input id="city" value={values.city} onChange={handleChange}  aria-describedby="City if any" fullWidth/>
-                <FormHelperText id="city">City if any</FormHelperText>
+                <Input 
+                    id="city"
+                    name="city" 
+                    value={values.city} 
+                    onChange={handleChange} 
+                    onBlur={handleBlur}
+                    aria-describedby="City if any" 
+                    fullWidth
+                />
+                <FormHelperText id="city"> 
+                    {visited.city && errors.city
+                        ? errors.city
+                        : "Your community city"
+                    }
+                </FormHelperText>
             </FormControl>
-            <FormControl>
+            <FormControl error={visited.state && Boolean(errors.state)}>
                 <InputLabel>State</InputLabel>
-                <Input id="state" value={values.state} onChange={handleChange} aria-describedby="State if any" fullWidth/>
-                <FormHelperText id="state">State if any</FormHelperText>
+                <Input 
+                    id="state" 
+                    name="state"
+                    value={values.state} 
+                    onChange={handleChange}
+                    onBlur={handleBlur} 
+                    aria-describedby="State if any" 
+                    fullWidth
+                />
+                <FormHelperText id="state"> 
+                    {visited.state && errors.state
+                        ? errors.state
+                        : "Your community state"
+                    }
+                </FormHelperText>
             </FormControl>
-            <FormControl>
+            <FormControl error={visited.zip && Boolean(errors.zip)}>
                 <InputLabel>Zip</InputLabel>
-                <Input id="zip" value={values.zip} onChange={handleChange} aria-describedby="Zip if any" fullWidth/>
-                <FormHelperText id="zip">Zip if any</FormHelperText>
+                <Input 
+                    id="zip" 
+                    name="zip"
+                    value={values.zip} 
+                    onChange={handleChange} 
+                    onBlur={handleBlur}
+                    aria-describedby="Zip if any" 
+                    fullWidth
+                />
+                <FormHelperText id="zip">
+                     {visited.zip && errors.zip
+                        ? errors.zip
+                        : "Your community zip"
+                    }
+                </FormHelperText>
             </FormControl>
-            <FormControl>
+            <FormControl error={visited.country && Boolean(errors.country)}>
                 <InputLabel>Country</InputLabel>
-                <Input id="country" value={values.country} onChange={handleChange} aria-describedby="Country where the community is located" fullWidth required/>
-                <FormHelperText id="country">Country where the community is located</FormHelperText>
+                <Input 
+                    id="country" 
+                    name="country"
+                    value={values.country} 
+                    onChange={handleChange} 
+                    onBlur={handleBlur}
+                    aria-describedby="Country where the community is located" 
+                    fullWidth 
+                    required
+                />
+                <FormHelperText id="country">
+                     {visited.country && errors.country
+                        ? errors.country
+                        : "Your community country"
+                    }
+                </FormHelperText>
             </FormControl>
-            <FormControl>
+            <FormControl error={visited.type && Boolean(errors.type)}>
                 <FormLabel id={`${typeId}-label`}>Type of Operation</FormLabel>
                 <RadioGroup
                     row
@@ -81,15 +186,33 @@ export default function Form() {
                     name="type"
                     value={values.type}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                 >
                     <FormControlLabel value="in-person" control={<Radio />} label="In-Person" />
                     <FormControlLabel value="hybrid" control={<Radio />} label="Hybrid" />
                     <FormControlLabel value="remote" control={<Radio />} label="Remote" />
                 </RadioGroup>
-                <FormHelperText id="type">Type of operation community is having</FormHelperText>
+                <FormHelperText id="type">
+                     {visited.type && errors.type
+                        ? errors.type
+                        : "Your community type"
+                    }
+                </FormHelperText>
             </FormControl>
-            <TextField id="standard-basic" value={values.description} onChange={handleChange} inputProps={{maxLength: 500}} label="Describe your community" variant="standard" multiline />
-            <FormControl>
+            <TextField 
+                id="standard-basic" 
+                name="description"
+                value={values.description} 
+                onChange={handleChange} 
+                onBlur={handleBlur}
+                error={visited.description && Boolean(errors.description)}
+                helperText={visited.description ? errors.description : ""}
+                inputProps={{maxLength: 500}} 
+                label="Describe your community" 
+                variant="standard" 
+                multiline 
+            />
+            <FormControl error={visited.isGlobal && Boolean(errors.isGlobal)}>
                 <FormLabel id={`${globalId}-label`}>Is Global?</FormLabel>
                 <RadioGroup
                     row
@@ -97,23 +220,47 @@ export default function Form() {
                     name="isGlobal"
                     value={values.isGlobal}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                 >
                     <FormControlLabel value="yes" control={<Radio />} label="Yes" />
                     <FormControlLabel value="no" control={<Radio />} label="No" />
                 </RadioGroup>
-                <FormHelperText id="isglobal">Is people from around the world can join your community?</FormHelperText>
+                <FormHelperText id="isglobal">Can people from around the world can join your community?</FormHelperText>
             </FormControl>
-            <FormControl>
+            <FormControl error={visited.website && Boolean(errors.website)}>
                 <InputLabel>Website</InputLabel>
-                <Input id="website" aria-describedby="Your community website" fullWidth required/>
+                <Input 
+                    id="website" 
+                    aria-describedby="Your community website" 
+                    name="website"
+                    value={values.website}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    fullWidth 
+                    required
+                />
                 <FormHelperText id="website">Website to join your community</FormHelperText>
             </FormControl>
-            <FormControl>
+            <FormControl error={visited.contact && Boolean(errors.contact)}>
                 <InputLabel>Contact</InputLabel>
-                <Input id="contact" aria-describedby="Your community contact" fullWidth required/>
+                <Input 
+                    id="contact" 
+                    aria-describedby="Your community contact" 
+                    name="contact"
+                    value={values.contact}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    fullWidth 
+                    required
+                />
                 <FormHelperText id="contact">contact to reach out</FormHelperText>
             </FormControl>
-            <button onClick={submitCommunity} className="text-[#e3ddd7] bg-[#8b5b30] px-3 py-2 rounded-lg text-base">Submit</button>
+            <button 
+                type="submit"
+                className="text-[#e3ddd7] bg-[#8b5b30] px-3 py-2 rounded-lg text-base"
+            >
+                Submit
+            </button>
         </form>
     );
 }
