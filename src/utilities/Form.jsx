@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FormControl, FormHelperText, Input, InputLabel, FormControlLabel, FormLabel, Radio, RadioGroup, TextField } from '@mui/material';
+import { FormControl, FormHelperText, Input, InputLabel, FormControlLabel, FormLabel, Radio, RadioGroup, TextField, Alert, Check } from '@mui/material';
 import { validateCommunitySubmission } from './validation';
 import { submitCommunity } from './communityService';
 
@@ -70,14 +70,12 @@ export default function Form() {
             alert("Something went wrong. Please try again.");
         }*/
        if (Object.keys(validationErrors).length > 0) {
-        console.log("Validation failed:", validationErrors);
         return;
     }
 
     // 5. Temporary testing (no backend yet)
-    console.log("Form submitted successfully:", values);
 
-    alert("Form validation successful!");
+        alert("Form validation successful!");
     }
 
     return (
@@ -119,7 +117,7 @@ export default function Form() {
                 <FormHelperText id="city"> 
                     {visited.city && errors.city
                         ? errors.city
-                        : "Your community city"
+                        : "City if any"
                     }
                 </FormHelperText>
             </FormControl>
@@ -137,7 +135,7 @@ export default function Form() {
                 <FormHelperText id="state"> 
                     {visited.state && errors.state
                         ? errors.state
-                        : "Your community state"
+                        : "State if any"
                     }
                 </FormHelperText>
             </FormControl>
@@ -155,7 +153,7 @@ export default function Form() {
                 <FormHelperText id="zip">
                      {visited.zip && errors.zip
                         ? errors.zip
-                        : "Your community zip"
+                        : "Zip if any"
                     }
                 </FormHelperText>
             </FormControl>
@@ -174,7 +172,7 @@ export default function Form() {
                 <FormHelperText id="country">
                      {visited.country && errors.country
                         ? errors.country
-                        : "Your community country"
+                        : "Country where the community is located"
                     }
                 </FormHelperText>
             </FormControl>
@@ -207,7 +205,6 @@ export default function Form() {
                 onBlur={handleBlur}
                 error={visited.description && Boolean(errors.description)}
                 helperText={visited.description ? errors.description : ""}
-                inputProps={{maxLength: 500}} 
                 label="Describe your community" 
                 variant="standard" 
                 multiline 
@@ -225,7 +222,12 @@ export default function Form() {
                     <FormControlLabel value="yes" control={<Radio />} label="Yes" />
                     <FormControlLabel value="no" control={<Radio />} label="No" />
                 </RadioGroup>
-                <FormHelperText id="isglobal">Can people from around the world can join your community?</FormHelperText>
+                <FormHelperText id="isglobal">
+                    {visited.isGlobal && errors.isGlobal
+                        ? errors.isGlobal
+                        : "Can people from around the world can join your community?"
+                    }
+                </FormHelperText>
             </FormControl>
             <FormControl error={visited.website && Boolean(errors.website)}>
                 <InputLabel>Website</InputLabel>
@@ -239,7 +241,12 @@ export default function Form() {
                     fullWidth 
                     required
                 />
-                <FormHelperText id="website">Website to join your community</FormHelperText>
+                <FormHelperText id="website">
+                    {visited.website && errors.website
+                        ? errors.website
+                        : "Website to join your community"
+                    }
+                </FormHelperText>
             </FormControl>
             <FormControl error={visited.contact && Boolean(errors.contact)}>
                 <InputLabel>Contact</InputLabel>
@@ -253,7 +260,12 @@ export default function Form() {
                     fullWidth 
                     required
                 />
-                <FormHelperText id="contact">contact to reach out</FormHelperText>
+                <FormHelperText id="contact">
+                    {visited.contact && errors.contact
+                        ? errors.contact
+                        : "Contact to reach out"
+                    }
+                </FormHelperText>
             </FormControl>
             <button 
                 type="submit"
