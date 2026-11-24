@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { FormControl, FormHelperText, Input, InputLabel, FormControlLabel, FormLabel, Radio, RadioGroup, TextField, Alert, Check } from '@mui/material';
+import { FormControl, FormHelperText, Input, InputLabel, FormControlLabel, FormLabel, Radio, RadioGroup, TextField, Alert} from '@mui/material';
+import CheckIcon from '@mui/icons-material/Check';
 import { validateCommunitySubmission } from './validation';
-import { submitCommunity } from './communityService';
+
 
 export default function Form() {
 
@@ -15,6 +16,12 @@ export default function Form() {
     const [values, setValues] = React.useState(initialValues);
     const [errors, setErrors] = React.useState({});
     const [visited, setVisited] = React.useState({});
+
+    const [alert, setAlert] = React.useState({
+        show: false,
+        severity: "success",
+        message:""
+    })
 
     const handleChange = (e) => {
         const {name,value} = e.target;
@@ -44,21 +51,46 @@ export default function Form() {
 
         setErrors(validationErrors);
 
-        const allVisited = Object.keys(values).reduce((acc,key)=>{
-            acc[key] = true
-            return acc
-        },{});
 
-        setVisited(allVisited);
+        setVisited(
+            Object.keys(values).reduce((acc,key)=>{
+                acc[key] = true;
+                return acc;
+            },{})
+        );
 
-        /*if(Object.keys(validationErrors).length>0){
+        if(Object.keys(validationErrors).length > 0){
+            setAlert({
+                show:true,
+                severity:"error",
+                message:"Please fix the error before submitting!"
+            });
             return;
         }
 
         try{
-            await submitCommunity(values)
+            const response = await fetch(
+                "http://localhost:5000/api/communities",
+                {
+                    method:"POST",
+                    headers:{
+                        "Content-Type": "application/json"
+                    },
+                    body:JSON.stringify(values)
+                }
+            );
 
-            alert("Community submitted successfully!");
+            const result = await response.json();
+
+            if(!response.ok){
+                throw new Error(result.message || "Submission failed!");
+            }
+
+            setAlert({
+                show: true,
+                severity:"success",
+                message: "Community submitted successfully!"
+            });
 
             setValues(initialValues);
             setErrors({});
@@ -67,16 +99,13 @@ export default function Form() {
         } 
         catch (error) {
             console.error("Submission failed:", error);
-            alert("Something went wrong. Please try again.");
-        }*/
-       if (Object.keys(validationErrors).length > 0) {
-        return;
-    }
-
-    // 5. Temporary testing (no backend yet)
-
-        alert("Form validation successful!");
-    }
+            setAlert({
+                show: true,
+                severity: "error",
+                message: error.message || "Something went wrong. Please try again."
+            });
+        }
+    };
 
     return (
         <form  
@@ -267,6 +296,18 @@ export default function Form() {
                     }
                 </FormHelperText>
             </FormControl>
+            {alert.show && (
+                <Alert
+                    icon={<CheckIcon fontSize="inherit" />}
+                    severity={alert.severity}
+                    onClose={() => setAlert(prev => ({
+                        ...prev,
+                        show: false
+                    }))}
+                >
+                    {alert.message}
+                </Alert>
+            )}
             <button 
                 type="submit"
                 className="text-[#e3ddd7] bg-[#8b5b30] px-3 py-2 rounded-lg text-base"
