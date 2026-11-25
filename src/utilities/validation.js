@@ -42,6 +42,19 @@ export function validateCommunitySubmission(data){
         }
     }
 
+    if(!data.image_url.trim()){
+        errors.image_url = "Website is required";
+    }
+    else{
+        try{
+            const url = new URL(data.image_url.trim());
+            if(!["http:", "https:"].includes(url.protocol)) throw new Error();
+        }
+        catch{
+            errors.image_url = "Enter a valid URL, e.g. https://example.jpg"
+        }
+    }
+
     if(!data.contact.trim()){
         errors.contact = "Contact is required";
     }

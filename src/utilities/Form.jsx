@@ -10,7 +10,7 @@ export default function Form() {
     const globalId = React.useId();
     const initialValues = {
         name:'', city:'', state:'', zip:'', country:'',
-        type:'',description:'',isGlobal:'',website:'',contact:''
+        type:'',description:'',isGlobal:'',website:'',contact:'',image_url:''
     };
 
     const [values, setValues] = React.useState(initialValues);
@@ -202,6 +202,24 @@ export default function Form() {
                      {visited.country && errors.country
                         ? errors.country
                         : "Country where the community is located"
+                    }
+                </FormHelperText>
+            </FormControl>
+            <FormControl error={visited.image_url && Boolean(errors.image_url)} >
+                <InputLabel>Community Image</InputLabel>
+                <Input 
+                    id="image_url" 
+                    name="image_url"
+                    value={values.image_url} 
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    aria-describedby="Your Community Logo" 
+                    fullWidth 
+                />
+                <FormHelperText id="image_url">
+                    {visited.image_url && errors.image_url
+                        ? errors.image_url
+                        : "Your Community Logo Link"
                     }
                 </FormHelperText>
             </FormControl>

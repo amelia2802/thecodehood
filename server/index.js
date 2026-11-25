@@ -84,3 +84,22 @@ app.post("/api/communities",async(req,res)=>{
 app.listen(PORT, ()=>{
     console.log(`Server running on port ${PORT}`);
 });
+
+app.get("/api/communities", async(req,res) => {
+    try{
+        const query = `
+            SELECT * FROM communities ORDER BY created_at DESC
+        `;
+
+        const result = await pool.query(query);
+
+        res.status(200).json(result.rows);
+    }
+    catch(error){
+        console.error("Error fetching communities:",error);
+
+        res.status(500).json({
+            message: "Unable to fetch communities."
+        })
+    }
+});
