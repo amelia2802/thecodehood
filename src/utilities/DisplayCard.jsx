@@ -16,6 +16,7 @@ export default function DisplayCard({img,title,city,state,country,format,details
                 <CardMedia 
                     sx={{height:200}}
                     image={img}
+                    alt={`${title} community`}
                 />
                 <Typography sx={{position:'absolute',width:'max-content',fontSize:'0.8rem',textTransform:'uppercase',top:12,right:12, textAlign:'center',color:'#fff',backgroundColor:'#8b5b30',padding:'.1rem .5rem',borderRadius:'1rem'}}>{format}</Typography>
                 <CardContent sx={{display:'flex',flexDirection:'column',gap:'6px'}}>

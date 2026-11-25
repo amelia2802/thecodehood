@@ -43,7 +43,7 @@ export function validateCommunitySubmission(data){
     }
 
     if(!data.image_url.trim()){
-        errors.image_url = "Website is required";
+        errors.image_url = "Image URL is required";
     }
     else{
         try{

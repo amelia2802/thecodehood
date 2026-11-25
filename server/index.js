@@ -34,7 +34,8 @@ app.post("/api/communities",async(req,res)=>{
             description,
             isGlobal,
             website,
-            contact
+            contact,
+            image_url
         } = req.body;
 
         if(!name || !country || !type || !website || !contact || 
@@ -47,8 +48,8 @@ app.post("/api/communities",async(req,res)=>{
 
         const query = `
             INSERT INTO communities
-            (name,city,state,zip,country,type,description,is_global,website,contact)
-            VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
+            (name,city,state,zip,country,type,description,is_global,website,contact,image_url)
+            VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)
             RETURNING *
         `;
 
@@ -62,7 +63,8 @@ app.post("/api/communities",async(req,res)=>{
             description || null,
             isGlobal === "yes",
             website,
-            contact
+            contact,
+            image_url || "https://images.pexels.com/photos/8344694/pexels-photo-8344694.jpeg"
         ];
 
         const result = await pool.query(query, values);

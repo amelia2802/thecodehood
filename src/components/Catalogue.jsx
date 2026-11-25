@@ -44,7 +44,11 @@ export default function Catalouge({ref}){
                 <Search />
             </div>
 
-            {loading && <CircularProgress color="inherit" aria-label="Loading…" />}
+            {loading && (
+                <div className="flex justify-center">
+                    <CircularProgress color="inherit" aria-label="Loading…" />
+                </div>
+            )}
 
             {error && <p className="text-red-500 text-center">{error}</p>}
 
@@ -59,7 +63,7 @@ export default function Catalouge({ref}){
                     return(
                         <DisplayCard 
                             key={community.id} 
-                            img={community.img} 
+                            img={community.image_url} 
                             title={community.name} 
                             city={community.city} 
                             state={community.state}
