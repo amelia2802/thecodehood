@@ -1,77 +1,56 @@
+import {useState} from "react";
 import { IoSearchOutline, IoCloseCircleOutline, IoLocationOutline } from "react-icons/io5";
+export default function Search({onSearch}) {
 
-export default function Search({
-    value = "",
-    onChange,
-    onSubmit,
-    onClear,
-    onLocationClick,
-    isGeoLoading = false,
-    placeholder = "City, State, Country, or Zip",
-    className = "",
-    inputId = "location-search-input"
-}) {
-    const handleSubmit = (e) => {
-        if (e) e.preventDefault();
-        if (onSubmit) {
-            onSubmit(value);
-        }
-    };
+    const [searchLocation, setSearchLocation] = useState("");
 
-    const handleKeyDown = (e) => {
-        if (e.key === "Enter") {
-            handleSubmit(e);
-        }
-    };
+    const handleSubmit = (e) =>{
+        e.preventDefault();
+        onSearch(searchLocation.trim());
+    }
 
     return (
         <form
             role="search"
             onSubmit={handleSubmit}
-            className={`relative flex items-center ${className}`}
+            className={`relative flex items-center`}
         >
-            <label htmlFor={inputId} className="sr-only">
+            <label className="sr-only">
                 Search communities by location
             </label>
             <div className="relative flex items-center w-full">
                 <input
-                    id={inputId}
                     type="text"
-                    value={value}
-                    onChange={(e) => onChange && onChange(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                    placeholder={placeholder}
+                    value={searchLocation}
+                    onChange={(e) => setSearchLocation(e.target.value)}
                     aria-label="Search by city, state, country, or postal code"
+                    placeholder="Search by city, state, country, or postal code"
                     className="w-full bg-[#fdfbf7] border border-[#8b5b30]/40 focus:border-[#5A321A] focus:outline-none focus:ring-2 focus:ring-[#8b5b30]/30 rounded-full py-2 pl-4 pr-24 text-sm text-[#402e32] placeholder:text-[#8b5b30]/60 transition-all shadow-xs"
                 />
 
                 <div className="absolute right-1.5 flex items-center gap-1">
-                    {value && value.trim().length > 0 && (
                         <button
                             type="button"
-                            onClick={onClear}
+                            onClick={()=>{
+                                setSearchLocation("");
+                                onSearch("");
+                            }}
                             aria-label="Clear search query"
                             title="Clear search"
                             className="p-1 text-[#8b5b30] hover:text-[#5A321A] hover:bg-[#8b5b30]/10 rounded-full transition-colors cursor-pointer"
                         >
                             <IoCloseCircleOutline className="text-xl" />
                         </button>
-                    )}
 
-                    {onLocationClick && (
                         <button
                             type="button"
-                            onClick={onLocationClick}
-                            disabled={isGeoLoading}
                             aria-label="Use browser location"
                             title="Find communities near me"
-                            className={`p-1.5 text-[#5A321A] hover:bg-[#8b5b30]/10 rounded-full transition-colors cursor-pointer ${
-                                isGeoLoading ? "animate-spin opacity-50" : ""
-                            }`}
+                            className={`p-1.5 text-[#5A321A] hover:bg-[#8b5b30]/10 rounded-full transition-colors cursor-pointer "animate-spin opacity-50"
+                            `}
                         >
                             <IoLocationOutline className="text-lg" />
                         </button>
-                    )}
 
                     <button
                         type="submit"

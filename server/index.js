@@ -90,7 +90,7 @@ app.listen(PORT, ()=>{
 app.get("/api/communities", async(req,res) => {
     try{
         const query = `
-            SELECT * FROM communities ORDER BY created_at DESC
+            SELECT * FROM communities ORDER BY created_at
         `;
 
         const result = await pool.query(query);

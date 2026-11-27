@@ -9,6 +9,20 @@ export default function Catalouge({ref}){
     const [communities, setCommunities] = useState([]);
     const [loading,setLoading] = useState(true);
     const [error,setError] = useState("");
+    const [searchLocation, setSearchLocation] = useState("");
+
+    const filteredCommunities = communities.filter((community)=>{
+        const query = searchLocation.toLowerCase();
+
+        return[
+            community.city,
+            community.state,
+            community.country,
+            community.zip
+        ].some((location)=>
+            String(location || "").toLowerCase().includes(query)
+        );
+    });
 
     useEffect(()=>{
 
@@ -41,7 +55,7 @@ export default function Catalouge({ref}){
             <div className="flex flex-col items-center justify-center gap-4">
                 <h3 className="text-3xl text-center font-semibold">Explore Tech Communities</h3>
                 <p>From online worlds to real-world connections.</p>
-                <Search />
+                <Search onSearch={setSearchLocation}/>
             </div>
 
             {loading && (
@@ -57,9 +71,11 @@ export default function Catalouge({ref}){
                     <p>No communities have been added in your location.</p>
                     <SubmitForm />
                 </div>
-            )}            
-            <div className="flex flex-col gap-4 md:grid md:grid-cols-3 md:gap-8">
-                {communities.map((community)=> {
+            )}
+
+            {filteredCommunities.length > 0 ? (            
+                <div className="flex flex-col gap-4 md:grid md:grid-cols-3 md:gap-8">
+                    {filteredCommunities.map((community)=> {
                     return(
                         <DisplayCard 
                             key={community.id} 
@@ -76,6 +92,12 @@ export default function Catalouge({ref}){
                     )
                 })}
             </div>
+                ) : (
+                    <div className="flex flex-col items-center justify-center gap-2">
+                        <p>No communities have been added in {searchLocation.toUpperCase()}.</p>
+                        <SubmitForm />
+                    </div>
+                )}
         </section>
     )
 }
